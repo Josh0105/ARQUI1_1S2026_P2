@@ -1,10 +1,10 @@
 /* =========================================================
- * Lección 00 – Hello World en ARM64 (Linux)
+ * Proyecto 2 ARQUI 1 - Archivo inicial - en ARM64 (Linux)
  * Archivo: main.s
  *
  * Ensamblador: aarch64-linux-gnu-as
  * Enlazador : aarch64-linux-gnu-ld
- * Ejecución : qemu-aarch64
+ * Ejecución : nativa
  *
  * No usa libc, solo syscalls de Linux.
  * ========================================================= */
@@ -12,48 +12,60 @@
 /* ---------------------------------------------------------
  * Registros usados en este archivo
  * ---------------------------------------------------------
- * x0 = argumento 1 de syscall (fd o codigo de salida)
- * x1 = argumento 2 de syscall (direccion de buffer)
- * x2 = argumento 3 de syscall (cantidad de bytes)
- * x8 = numero de syscall Linux ARM64
+ * x0 = argumento 1 de syscall (direccion de buffer o codigo de salida)
  * --------------------------------------------------------- */
+
+.include "utils.s" // Incluimos el archivo de utilidades
 
 /* ---------------------------------------------------------
  * Sección de datos
  * --------------------------------------------------------- */
 .section .data
+    .align 2  
+    str1: .string "¡Bienvenido al Proyecto 2 - ARQUI 1 Aarch64!\n"
+    str2: .string "Seleccione una opción:\n"
+    str3: .string "1. Ingresar Matriz A\n"
+    str4: .string "2. Salir del sistema\n"
+    str5: .string "Saliendo...\n"
 
-msg:
-    .ascii "Hello, world\n"     // Cadena a imprimir (sin NULL)
-    msg_len = . - msg           // Longitud del mensaje
 
 /* ---------------------------------------------------------
  * Sección de código
  * --------------------------------------------------------- */
 .section .text
-.global _start               // Punto de entrada real
+.global _start               // Punto de entrada
 
 _start:
-    /* -----------------------------------------------------
-     * syscall: write(stdout, msg, msg_len)
-     *
-     * x0 = file descriptor (1 = stdout)
-     * x1 = dirección del buffer
-     * x2 = número de bytes
-     * x8 = número de syscall (64)
-     * ----------------------------------------------------- */
-    mov     x0, #1               // stdout
-    adr     x1, msg              // dirección del mensaje
-    mov     x2, msg_len          // longitud
-    mov     x8, #64              // syscall write
-    svc     #0                   // llamada al kernel
 
-    /* -----------------------------------------------------
-     * syscall: exit(0)
-     *
-     * x0 = código de salida
-     * x8 = número de syscall (93)
-     * ----------------------------------------------------- */
+printInitialMenu:
+    ldr x0, =str1
+    bl printString
+    bl printEnter
+
+    ldr x0, =str2
+    bl printString
+    bl printEnter
+    ldr x0, =str3
+    bl printString
+    ldr x0, =str4
+    bl printString
+
+    bl printEnter
+
+    ldr x0, =str5
+    bl printString
+    bl printEnter
+
+
+bl endProgram
+
+/* -----------------------------------------------------
+* syscall exit(0)
+*
+* x0 = código de salida
+* x8 = número de syscall (93)
+* ----------------------------------------------------- */
+endProgram:
     mov     x0, #0               // código de salida
     mov     x8, #93              // syscall exit
     svc     #0                   // llamada al kernel
