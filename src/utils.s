@@ -34,8 +34,8 @@ printEnter:
     stp fp, lr, [sp, #-0x10]!
     mov fp, sp
     
-    adrp x0, enter
-    add x0, x0, :lo12:enter
+    adrp x0, enter // Cargar la dirección de la página de 'enter' en x0
+    add x0, x0, :lo12:enter // Agregar el desplazamiento de 'enter' a x0
     bl printString
 
     ldp fp, lr, [sp], #0x10
