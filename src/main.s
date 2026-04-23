@@ -16,6 +16,7 @@
  * --------------------------------------------------------- */
 
 .include "utils.s" // Incluimos el archivo de utilidades
+.include "matrix.s" // Ingreso y almacenamiento de matrices
 /* ---------------------------------------------------------
  * Sección de para reservar espacio
  * --------------------------------------------------------- */
@@ -91,7 +92,7 @@ printInitialMenu:
     bl printEnter
 
     // Leemos la opción ingresada en la consola
-    bl readOptionFromConsole
+    bl readIntFromConsole
 
     str x0, [sp, #-16]!// Guardamos la opción ingresada en la pila
     bl printEnter
@@ -130,16 +131,19 @@ printInitialMenu:
 case1:
     ldr x0, =str1
     bl printString
+    bl newMatrix
     b printInitialMenu
 
 case2:
     ldr x0, =str2
     bl printString
+    bl freeMatrixById
     b printInitialMenu
   
 case3:
     ldr x0, =str3
     bl printString
+    bl printMatrixById
     b printInitialMenu
 
 case4:
@@ -196,7 +200,7 @@ printArithmeticMenu:
     bl printEnter
 
 //SWITCH CASE PARA LAS OPCIONES SEGUNDO MENU
-    bl readOptionFromConsole
+    bl readIntFromConsole
 
     str x0, [sp, #-16]!// Guardamos la opción ingresada en la pila
     bl printEnter

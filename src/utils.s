@@ -7,7 +7,8 @@
 
 .global printEnter
 .global printString
-.global readOptionFromConsole
+.global printInteger
+.global readIntFromConsole
 
 /* ---------------------------------------------------------
  * Seccion bss para variables globales no inicializadas
@@ -87,13 +88,13 @@ printString: //x0 string address to print
     ret
 
 /* -----------------------------------------------------
-* readOptionFromConsole:
+* readIntFromConsole:
 * x0 = devuelve el entero ingresado en consola o negativo si hubo un error
 * x1 = dirección del buffer de entrada
 * x2 = tamaño del buffer de entrada
 * x8 = número de syscall (63)
 * ----------------------------------------------------- */
-readOptionFromConsole:
+readIntFromConsole:
   stp fp, lr, [sp, #-0x10]!
   mov fp, sp
 
@@ -103,6 +104,8 @@ readOptionFromConsole:
   mov x2, 32 
   mov x8, 63 // syscall read
   svc 0 // ejecuta lectura
+  cmp x0, #1 // EOF o error de lectura
+  blt errorInputAskInteger
   ldr x0, =input // cargar dirección del buffer en x0 para validación
 
 loopValidationInput:
@@ -158,25 +161,32 @@ cleanUpInput:
 * Convierte una cadena de caracteres numéricos en un entero, deteniéndose al encontrar un carácter no numérico o el final de la cadena.
 * x0 = valor entero resultante de la conversión
 * x1 = dirección de la cadena a convertir
-* x8 = caracter de nueva línea que indica el final de la cadena
+* x6 = caracter de nueva línea que indica el final de la cadena
 * x9 = contador de dígitos procesados
 * w2 = byte actual leído de la cadena
-* w8 = caracter de nueva línea (fin de cadena)
+* w6 = caracter de nueva línea (fin de cadena)
 * ----------------------------------------------------- */
 funcAtoiWithCounter: //x0 address string x1 the endtocount- returns x0 integer
   stp fp, lr, [sp, #-0x10]!
   mov fp, sp
-  mov x8, x1
+  mov x6, x1
   mov x1, x0 //x1 adress
   mov x0, #0 //value
   mov x9, #0 //the counter
 
 processFuncAtoiWithCounter:
   ldrb w2, [x1], #1
-  cmp w2, w8 // comparamos con el caracter de nueva línea
+  cmp w2, #0 // fin de cadena
+  beq endAtoiFromNull
+  cmp w2, w6 // comparamos con el caracter de nueva línea
   bne processNextChar // si no es nueva línea, seguimos procesando
 
   mov x1, x9 // si es nueva línea, movemos el contador a x1 para devolverlo
+  ldp fp, lr, [sp], #0x10
+  ret
+
+endAtoiFromNull:
+  mov x1, x9
   ldp fp, lr, [sp], #0x10
   ret
 
@@ -195,3 +205,103 @@ processNextChar:
   mul x0, x0, x4 // multiplicamos el valor acumulado por 10 para desplazarlo a la izquierda
   add x0, x0, x2 // sumamos el valor del dígito actual al valor acumulado
   b processFuncAtoiWithCounter
+
+/* -----------------------------------------------------
+* printInteger:
+* x0 = entero a imprimir
+* ----------------------------------------------------- */
+printInteger:
+  stp fp, lr, [sp, #-0x10]!
+  mov fp, sp
+
+  mov x7, x0
+  bl cleanUpOutput
+  mov x0, x7
+  adrp x1, output
+  add x1, x1, :lo12:output
+  mov x3, #0
+  bl itoa
+
+  adrp x0, output
+  add x0, x0, :lo12:output
+  bl printString
+
+  ldp fp, lr, [sp], #0x10
+  ret
+
+cleanUpOutput:
+  stp fp, lr, [sp, #-0x10]!
+  mov fp, sp
+
+  adrp x0, output
+  add x0, x0, :lo12:output
+  mov x2, #0
+
+loopCleanOutput:
+  cmp x2, #7
+  bge endCleanOutput
+  str xzr, [x0], #8
+  str xzr, [x0], #8
+  add x2, x2, #1
+  b loopCleanOutput
+
+endCleanOutput:
+  ldp fp, lr, [sp], #0x10
+  ret
+
+// itoa:
+// x0 = número
+// x1 = buffer destino
+// x3 = 0 para no agregar salto de línea
+itoa:
+  stp fp, lr, [sp, #-0x10]!
+  mov fp, sp
+
+  mov x9, x0
+  mov x10, x1
+  mov x11, #10
+  cbz x9, itoaZero
+
+  mov x12, x9
+  mov x13, #1
+itoaCountDigits:
+  cbz x12, itoaEndCount
+  udiv x12, x12, x11
+  add x13, x13, #1
+  b itoaCountDigits
+
+itoaEndCount:
+  add x10, x10, x13
+  strb wzr, [x10]
+  sub x10, x10, #1
+  mov w14, #10
+  cmp x3, #0
+  beq itoaSkipEnter
+  strb w14, [x10]
+itoaSkipEnter:
+  sub x10, x10, #1
+
+itoaLoop:
+  udiv x12, x9, x11
+  mul x13, x12, x11
+  sub x13, x9, x13
+  add x13, x13, #'0'
+  strb w13, [x10]
+  sub x10, x10, #1
+  mov x9, x12
+  cbnz x9, itoaLoop
+
+  ldp fp, lr, [sp], #0x10
+  ret
+
+itoaZero:
+  mov w9, #'0'
+  strb w9, [x10]
+  mov w9, #10
+  cmp x3, #0
+  beq itoaSkipEnter2
+  strb w9, [x10, #1]
+itoaSkipEnter2:
+  strb wzr, [x10, #2]
+  ldp fp, lr, [sp], #0x10
+  ret
