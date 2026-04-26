@@ -260,12 +260,25 @@ printInteger:
 
   mov x7, x0
   bl cleanUpOutput
-  mov x0, x7
   adrp x1, output
   add x1, x1, :lo12:output
   mov x3, #0
+
+  cmp x7, #0
+  bge printIntegerPositive
+
+  mov w4, #'-'
+  strb w4, [x1]
+  neg x0, x7
+  add x1, x1, #1
+  bl itoa
+  b printIntegerWrite
+
+printIntegerPositive:
+  mov x0, x7
   bl itoa
 
+printIntegerWrite:
   adrp x0, output
   add x0, x0, :lo12:output
   bl printString

@@ -40,6 +40,9 @@
     strMatrixFreed: .string "Matriz liberada correctamente.\n"
     strMatrixAlreadyFreed: .string "La matriz ya estaba liberada.\n"
     strAskIdUniqueOperation: .string "Ingrese el ID de la matriz a operar (A-Z): "
+    strAskIdFirstMatrix: .string "Ingrese el ID de la matriz (A-Z) Operador 1: "
+    strAskIdSecondMatrix: .string "Ingrese el ID de la matriz (A-Z) Operador 2: "
+    strNoEqualDimensions: .string "Las matrices no tienen dimensiones compatibles para esta operación.\n"
     strNotSquare: .string "La matriz no es cuadrada. Operación no válida.\n"
     strSpace: .string " "
 
@@ -307,7 +310,7 @@ printColsLoop:
     add w14, w14, w12  // sumamos la columna para obtener el offset total en elementos: i * columnas + j
     lsl w14, w14, #2 // multiplicamos por 4 para obtener el offset en bytes
     ldr x15, [fp, #-8] // Carga el puntero base de la matriz
-    ldr w0, [x15, x14] // Carga el valor del elemento actual de la matriz en w0
+    ldrsw x0, [x15, x14] // Carga el valor del elemento actual de la matriz con signo en x0
     bl printInteger // Imprime el valor del elemento actual
     ldr x0, =strSpace
     bl printString // Imprime un espacio después del valor
@@ -378,7 +381,7 @@ printLastResultColsLoop:
     add w14, w14, w12  // sumamos la columna para obtener el offset total en elementos: i * columnas + j
     lsl w14, w14, #2 // multiplicamos por 4 para obtener el offset en bytes
     ldr x15, [fp, #-8] // Carga el puntero base de la matriz
-    ldr w0, [x15, x14] // Carga el valor del elemento actual de la matriz en w0
+    ldrsw x0, [x15, x14] // Carga el valor del elemento actual de la matriz con signo en x0
     bl printInteger // Imprime el valor del elemento actual
     ldr x0, =strSpace
     bl printString // Imprime un espacio después del valor
@@ -628,6 +631,45 @@ generalStrCharInvalid:
     stp fp, lr, [sp, #-0x10]!
     mov fp, sp
     ldr x0, =strCharInvalid
+    bl printString
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* -----------------------------------------------------
+* generalAskIdFirstMatrix:
+* Funcion general para mostrar mensaje de solicitud del operador 1:
+* no recibe parametros, solo muestra mensaje y retorna.
+* ----------------------------------------------------- */
+generalAskIdFirstMatrix:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+    ldr x0, =strAskIdFirstMatrix
+    bl printString
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* -----------------------------------------------------
+* generalAskIdSecondMatrix:
+* Funcion general para mostrar mensaje de solicitud del operador 2:
+* no recibe parametros, solo muestra mensaje y retorna.
+* ----------------------------------------------------- */
+generalAskIdSecondMatrix:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+    ldr x0, =strAskIdSecondMatrix
+    bl printString
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* -----------------------------------------------------
+* generalNoEqualDimensions:
+* Funcion general para mostrar mensaje de error de dimensiones incompatibles:
+* no recibe parametros, solo muestra mensaje y retorna.
+* ----------------------------------------------------- */
+generalNoEqualDimensions:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+    ldr x0, =strNoEqualDimensions
     bl printString
     ldp fp, lr, [sp], #0x10
     ret

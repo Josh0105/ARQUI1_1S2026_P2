@@ -19,6 +19,7 @@
 .include "matrix.s" // Ingreso y almacenamiento de matrices
 .include "matrixFunctions/transposed.s" // Función para generar matriz transpuesta
 .include "matrixFunctions/identity.s" // Función para generar matriz identidad
+.include "matrixArithmetic/addition.s" // Función para suma de matrices
 
 /* ---------------------------------------------------------
  * Sección de datos
@@ -234,11 +235,15 @@ printArithmeticMenu:
 case1_1:
     ldr x0, =str1_1
     bl printString
+    mov x0, #0 // modo suma
+    bl setAdditionMatrix
     b printArithmeticMenu
 
 case1_2:
     ldr x0, =str1_2
     bl printString
+    mov x0, #1 // modo resta
+    bl setAdditionMatrix
     b printArithmeticMenu
 
 case1_3:
