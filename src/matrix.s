@@ -1,6 +1,7 @@
 .global newMatrix
 .global getMatrixById
 .global printMatrixById
+.global printLastResult
 .global freeMatrixById
 
 /* ---------------------------------------------------------
@@ -29,11 +30,13 @@
     strVal2: .string "]["
     strVal3: .string "]: "
     strSaved: .string "Matriz guardada con identificador: "
-    strInvalid: .string "Entrada invalida. Ingrese un entero positivo.\n"
+    strIntInvalid: .string "Entrada invalida. Ingrese un entero positivo.\n"
+    strCharInvalid: .string "Entrada invalida. Ingrese una letra (A-Z).\n"
     strNoSlot: .string "No hay mas identificadores disponibles (A-Z).\n"
     strAskIdPrint: .string "Ingrese el ID de la matriz a imprimir (A-Z): "
     strAskIdFree: .string "Ingrese el ID de la matriz a liberar (A-Z): "
     strMatrixNotFound: .string "No existe una matriz con ese ID.\n"
+    strMatrixResultNotFound: .string "No hay una matriz resultado para mostrar.\n"
     strMatrixFreed: .string "Matriz liberada correctamente.\n"
     strMatrixAlreadyFreed: .string "La matriz ya estaba liberada.\n"
     strAskIdUniqueOperation: .string "Ingrese el ID de la matriz a operar (A-Z): "
@@ -62,7 +65,7 @@
 newMatrix:
     stp fp, lr, [sp, #-0x10]!
     mov fp, sp
-    sub sp, sp, #64
+    sub sp, sp, #64 // Espacio para variables locales: filas, columnas, puntero matriz, indice matriz, i, j
 
     // Verifica si aun hay slots disponibles (A..Z)
     ldr x9, =matrixCount // Carga la direccion de matrixCount
@@ -77,7 +80,7 @@ askRows:
     bl readIntFromConsole 
     cmp x0, #1 
     bge saveRows // si el resultado es 1 o más, guardamos filas
-    ldr x0, =strInvalid // de lo contrario, mensaje de error
+    ldr x0, =strIntInvalid // de lo contrario, mensaje de error
     bl printString
     b askRows
 
@@ -91,7 +94,7 @@ askCols:
     bl readIntFromConsole
     cmp x0, #1
     bge saveCols // si el resultado es 1 o más, guardamos columnas
-    ldr x0, =strInvalid // de lo contrario, mensaje de error
+    ldr x0, =strIntInvalid // de lo contrario, mensaje de error
     bl printString
     b askCols
 
@@ -195,7 +198,7 @@ askValue:
     bl readIntFromConsole // Lee valor desde consola
     cmp x0, #0
     bge storeValue // Si el valor es 0 o positivo, lo almacenamos en la matriz
-    ldr x0, =strInvalid
+    ldr x0, =strIntInvalid
     bl printString // Si el valor es negativo, mostramos mensaje de error y volvemos a pedir el valor
     b askValue
 
@@ -249,49 +252,6 @@ endIngresarMatriz:
     ret
 
 /* -----------------------------------------------------
-* readMatrixIdFromConsole:
-* Lee un ID de matriz (A..Z) desde consola.
-*
-* Retorno:
-* x0 = ASCII en mayuscula si es valido, 0 si es invalido
-* ----------------------------------------------------- */
-readMatrixIdFromConsole:
-    stp fp, lr, [sp, #-0x10]!
-    mov fp, sp
-
-    bl cleanUpInput // Limpiamos el buffer de entrada antes de leer el ID
-    mov x0, #0 // preparar para leer de stdin
-    ldr x1, =input // direccion del buffer de entrada
-    mov x2, #32 // tamaño del buffer de entrada
-    mov x8, #63 // syscall read
-    svc #0 // ejecuta lectura
-    cmp x0, #1
-    blt invalidMatrixId // Si no se leyó nada o hubo un error, retornamos ID inválido
-
-    ldr x1, =input // Carga la direccion del buffer de entrada para procesar el ID ingresado
-    ldrb w0, [x1] // Lee el primer byte del buffer, que debería ser el ID ingresado
-
-    cmp w0, #'a'
-    blt checkUpperId // Si es menor que 'a', no es una letra minúscula, vamos a verificar si es mayúscula
-    cmp w0, #'z' 
-    bgt checkUpperId // Si es mayor que 'z', no es una letra minúscula, vamos a verificar si es mayúscula
-    sub w0, w0, #32 // Convertimos a mayúscula restando 32 al valor ASCII (a->A, b->B, etc.)
-
-checkUpperId:
-    cmp w0, #'A' 
-    blt invalidMatrixId // Si es menor que 'A', no es una letra mayúscula, ID inválido
-    cmp w0, #'Z'
-    bgt invalidMatrixId // Si es mayor que 'Z', no es una letra mayúscula, ID inválido
-
-    ldp fp, lr, [sp], #0x10 
-    ret
-
-invalidMatrixId:
-    mov x0, #0
-    ldp fp, lr, [sp], #0x10
-    ret
-
-/* -----------------------------------------------------
 * printMatrixById:
 * Solicita un ID y muestra la matriz asociada en consola.
 * ----------------------------------------------------- */
@@ -306,8 +266,7 @@ askPrintId:
     bl readMatrixIdFromConsole // Lee el ID ingresado y lo valida, retorna 0 si es inválido
     cmp x0, #0
     bne continuePrintById // Si el ID es válido (no 0), continuamos con la impresión de la matriz
-    ldr x0, =strMatrixNotFound
-    bl printString // Si el ID es inválido, mostramos mensaje de error y volvemos a pedir el ID
+    bl generalStrCharInvalid // Si el ID es inválido, mostramos mensaje de error y volvemos a pedir el ID
     b askPrintId
 
 continuePrintById:
@@ -365,11 +324,81 @@ nextPrintRow:
     b printRowsLoop // Itera a la siguiente fila
 
 matrixNotFoundPrint:
-    ldr x0, =strMatrixNotFound
-    bl printString // Si no se encontró la matriz, mostramos mensaje de error
+    bl generalMatrixNotFound // Si no se encontró la matriz, mostramos mensaje de error
 
 endPrintById: 
     add sp, sp, #48
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* -----------------------------------------------------
+* printLastResult:
+* Muestra la última matriz resultado generada en consola.
+* ----------------------------------------------------- */
+printLastResult:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+    sub sp, sp, #32 // Espacio para variables locales: puntero matriz, filas, columnas, i, j
+
+continuePrintLastResult:
+    bl getMatrixResult  // Busca la matriz resultado, retorna puntero en x0, filas en w1, columnas en w2
+    str x0, [fp, #-8] // Guardamos el puntero de la matriz en el stack
+    str w1, [fp, #-12] // Guardamos filas en el stack
+    str w2, [fp, #-16] // Guardamos columnas en el stack
+
+    cmp x0, #0
+    beq matrixResultNotFoundPrint // Si no se encontró la matriz (puntero 0), mostramos mensaje de error
+
+    mov w11, #0 // creamos variable i para iterar filas
+    str w11, [fp, #-20] // Guardamos i en el stack
+
+/* -----------------------------------------------------
+* Recorrido de la matriz usando i para filas y j para columnas, 
+* calculando el offset para acceder a cada elemento y luego imprimiendo su valor 
+* seguido de un espacio. Al finalizar cada fila, se imprime un salto de línea.
+-----------------------------------------------------*/
+printLastResultRowsLoop:
+    ldr w11, [fp, #-20] // Carga i
+    ldr w9, [fp, #-12]  // Carga total de filas
+    cmp w11, w9
+    bge endPrintLastResult // Si terminamos de imprimir todas las filas, salimos
+    mov w12, #0 // resetea j para cada nueva fila
+    str w12, [fp, #-24] // guarda j en el stack
+
+printLastResultColsLoop:
+    ldr w12, [fp, #-24] // Carga j
+    ldr w10, [fp, #-16] // Carga total de columnas
+    cmp w12, w10
+    bge nextPrintLastResultRow // si terminamos de imprimir todas las columnas, vamos a la siguiente fila, si no, seguimos imprimiendo valores para la fila actual
+
+    ldr w11, [fp, #-20] // Carga i
+    ldr w13, [fp, #-16] // Carga total de columnas
+    mul w14, w11, w13 // calculamos la posición base de la fila: i * columnas
+    add w14, w14, w12  // sumamos la columna para obtener el offset total en elementos: i * columnas + j
+    lsl w14, w14, #2 // multiplicamos por 4 para obtener el offset en bytes
+    ldr x15, [fp, #-8] // Carga el puntero base de la matriz
+    ldr w0, [x15, x14] // Carga el valor del elemento actual de la matriz en w0
+    bl printInteger // Imprime el valor del elemento actual
+    ldr x0, =strSpace
+    bl printString // Imprime un espacio después del valor
+
+    ldr w12, [fp, #-24] // Carga j
+    add w12, w12, #1 // j++
+    str w12, [fp, #-24] // Guarda j actualizado en el stack
+    b printLastResultColsLoop
+
+nextPrintLastResultRow:
+    bl printEnter // Imprime salto de línea al finalizar cada fila
+    ldr w11, [fp, #-20] // Carga i
+    add w11, w11, #1 // i++
+    str w11, [fp, #-20] // Guarda i actualizado en el stack
+    b printLastResultRowsLoop // Itera a la siguiente fila
+
+matrixResultNotFoundPrint:
+    bl generalMatrixResultNotFound // Si no se encontró la matriz, mostramos mensaje de error
+
+endPrintLastResult: 
+    add sp, sp, #32
     ldp fp, lr, [sp], #0x10
     ret
 
@@ -388,8 +417,7 @@ askFreeId:
     bl readMatrixIdFromConsole // Lee el ID ingresado y lo valida, retorna 0 si es inválido
     cmp x0, #0
     bne continueFreeById // Si el ID es válido (no 0), continuamos con el proceso de liberación de la matriz
-    ldr x0, =strMatrixNotFound
-    bl printString // Si el ID es inválido, mostramos mensaje de error y volvemos a pedir el ID
+    bl generalStrCharInvalid // Si el ID es inválido, mostramos mensaje de error y volvemos a pedir el ID
     b askFreeId
 
 continueFreeById:
@@ -443,8 +471,7 @@ continueFreeById:
     b endFreeById   
 
 matrixNotFoundFree:
-    ldr x0, =strMatrixNotFound
-    bl printString // Si no se encontró la matriz, mostramos mensaje de error
+    bl generalMatrixNotFound // Si no se encontró la matriz, mostramos mensaje de error
 
 endFreeById:
     add sp, sp, #32
@@ -503,6 +530,47 @@ getMatrixById:
     ldp fp, lr, [sp], #0x10
     ret
 
+
+/* -----------------------------------------------------
+* getMatrixResult:
+* Busca la matriz resultado.
+*
+* Entrada:
+* no tiene entradas, ya que siempre se busca la matriz resultado almacenada en matrixResultPointer
+*
+* Retorno:
+* x0 = puntero de matriz (0 si no existe)
+* w1 = filas
+* w2 = columnas
+*
+* Registros importantes:
+* x13 = registros temporales para cargar metadata de la matriz resultado
+* ----------------------------------------------------- */
+getMatrixResult:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+
+    // Carga puntero y dimensiones de la matriz resultado
+    ldr x0, =matrixResultPointer // Carga la direccion de matrixResultPointer
+    ldr x0, [x0] // Carga el puntero de la matriz resultado en x0 para el retorno
+
+    cmp x0, #0
+    beq notFoundMatrix // Si el puntero es 0, significa que no hay
+
+    ldr x13, =matrixResultRows // Carga la direccion de matrixResultRows
+    ldr w1, [x13] // Carga la cantidad de filas de la matriz resultado en w1 para el retorno
+
+    ldr x13, =matrixResultCols // Carga la direccion de matrixResultCols
+    ldr w2, [x13] // Carga la cantidad de columnas de la matriz resultado en w2 para el retorno
+
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* ----------------------------------------------------- 
+* subrutina comun para getMatrixById y getMatrixResult cuando no se encuentra la matriz solicitada
+* no tiene stp porque se asume que la función que llama a esta etiqueta ya hizo el stp correspondiente
+* pero si tiene el ldp para restaurar fp y lr antes de retornar
+-------------------------------------------------------*/
 notFoundMatrix:
     // Retorno nulo cuando no existe la matriz solicitada
     mov x0, #0
@@ -511,66 +579,72 @@ notFoundMatrix:
     ldp fp, lr, [sp], #0x10
     ret
 
-//-----------------------------------------------------
-
-setTransposedMatrixResult:
-    stp fp, lr, [sp, #-0x10]!
-    mov fp, sp
-    sub sp, sp, #32 // variables locales para matriz origen y resultado previo
-
-askTransposedMatrixId:
-    ldr x0, =strAskIdUniqueOperation
-    bl printString // Imprime "Ingrese el ID de la matriz a operar (A-Z): "
-    bl readMatrixIdFromConsole // Lee el ID ingresado y lo valida, retorna 0 si es inválido
-    cmp x0, #0
-    bne continueTransposedMatrixId // Si el ID es válido (no 0), continuamos con la operación de transposición de la matriz
-    ldr x0, =strMatrixNotFound
-    bl printString // Si el ID es inválido, mostramos mensaje de error y volvemos a pedir el ID
-    b askTransposedMatrixId
-
-continueTransposedMatrixId:
-    bl getMatrixById // Busca la matriz por ID, retorna puntero en x0, filas en w1, columnas en w2
-    str x0, [fp, #-8] // Guardamos el puntero de la matriz en el stack
-    str w1, [fp, #-12] // Guardamos filas en el stack
-    str w2, [fp, #-16] // Guardamos columnas en el stack
-
-    cmp x0, #0
-    beq generalMatrixNotFound // Si no se encontró la matriz (puntero 0), mostramos mensaje de error
-
-    // Si se encontró liberamos cualquier resultado previo almacenado en matrixResultPointer antes de guardar el nuevo resultado
-    bl freePreviousMatrixResult
-    // Reservamos memoria para la nueva matriz transpuesta usando matrixMalloc y guardamos su metadata para uso posterior
-    ldr w0, [fp, #-16] // filas resultado = columnas matriz original
-    ldr w1, [fp, #-12] // columnas resultado = filas matriz original
-    bl mallocResultMatrix
-    
-    b endTransposed
-
-endTransposed:
-    add sp, sp, #32
-    ldp fp, lr, [sp], #0x10
-    ret
-
-
-
-// funcion general para imprimir matriz no encontrada
+/* -----------------------------------------------------
+* generalMatrixNotFound:
+* Funcion general para mostrar mensaje de error cuando no se encuentra una matriz solicitada por ID.:
+* no recibe parametros, solo muestra mensaje de error y retorna.
+* ----------------------------------------------------- */
 generalMatrixNotFound:
     stp fp, lr, [sp, #-0x10]!
     mov fp, sp
     ldr x0, =strMatrixNotFound
-    bl printString // Si no se encontró la matriz, mostramos mensaje de error
+    bl printString
     ldp fp, lr, [sp], #0x10
     ret
 
+/* -----------------------------------------------------
+* generalMatrixResultNotFound:
+* Funcion general para mostrar mensaje de error cuando no existe matriz resultado:
+* no recibe parametros, solo muestra mensaje de error y retorna.
+* ----------------------------------------------------- */
+generalMatrixResultNotFound:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+    ldr x0, =strMatrixResultNotFound
+    bl printString
+    ldp fp, lr, [sp], #0x10
+    ret
 
+/* -----------------------------------------------------
+* generalStrIntInvalid:
+* Funcion general para mostrar mensaje de error cuando se ingresa un entero invalido
+* no recibe parametros, solo muestra mensaje de error y retorna.
+* ----------------------------------------------------- */
+generalStrIntInvalid:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+    ldr x0, =strIntInvalid
+    bl printString
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* -----------------------------------------------------
+* generalStrCharInvalid:
+* Funcion general para mostrar mensaje de error cuando se ingresa un string invalido
+* no recibe parametros, solo muestra mensaje de error y retorna.
+* ----------------------------------------------------- */
+generalStrCharInvalid:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+    ldr x0, =strCharInvalid
+    bl printString
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* -----------------------------------------------------
+* mallocResultMatrix:
+* Reserva memoria para la matriz resultado usando matrixMalloc.
+* Entrada:
+* w0 = filas de la matriz resultado
+* w1 = columnas de la matriz resultado
+* Retorno:
+* x0 = direccion base reservada para la matriz resultado
+* ----------------------------------------------------- */
 mallocResultMatrix:
     stp fp, lr, [sp, #-0x10]!
     mov fp, sp
-    sub sp, sp, #16
+    sub sp, sp, #16 // espacio para guardar filas y columnas de la matriz resultado
 
-    // Entrada:
-    // w0 = filas de la matriz resultado
-    // w1 = columnas de la matriz resultado
     str w0, [fp, #-4] // Guardamos filas resultado en el stack
     str w1, [fp, #-8] // Guardamos columnas resultado en el stack
 
@@ -590,15 +664,12 @@ mallocResultMatrix:
     ldr w11, [fp, #-4] // Carga filas del stack
     str w11, [x14] // Guarda filas de la matriz resultado
     ldr x14, =matrixResultCols // Carga la direccion de matrixResultCols
-    ldr w12, [fp, #-8]
+    ldr w12, [fp, #-8] // Carga columnas del stack
     str w12, [x14] // Guarda columnas de la matriz resultado
 
     add sp, sp, #16
     ldp fp, lr, [sp], #0x10
     ret
-
-
-
 
 // Liberamos cualquier resultado previo almacenado en matrixResultPointer antes de guardar el nuevo resultado
 freePreviousMatrixResult:
@@ -635,11 +706,6 @@ freePreviousMatrixResult:
 endFreePreviousResult:
     ldp fp, lr, [sp], #0x10
     ret
-
-
-
-
-
 
 /* -----------------------------------------------------
 * matrixMalloc:

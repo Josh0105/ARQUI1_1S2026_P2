@@ -16,6 +16,7 @@
 .section .bss
     .align 3
     output: .skip 112
+    input: .space 32
 
 /* ---------------------------------------------------------
  * Sección de datos
@@ -127,6 +128,49 @@ endLoopValidationInput:
 
   ldp fp, lr, [sp], #0x10
   ret
+
+/* -----------------------------------------------------
+* readMatrixIdFromConsole:
+* Lee un ID de matriz (A..Z) desde consola.
+*
+* Retorno:
+* x0 = ASCII en mayuscula si es valido, 0 si es invalido
+* ----------------------------------------------------- */
+readMatrixIdFromConsole:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+
+    bl cleanUpInput // Limpiamos el buffer de entrada antes de leer el ID
+    mov x0, #0 // preparar para leer de stdin
+    ldr x1, =input // direccion del buffer de entrada
+    mov x2, #32 // tamaño del buffer de entrada
+    mov x8, #63 // syscall read
+    svc #0 // ejecuta lectura
+    cmp x0, #1
+    blt invalidMatrixId // Si no se leyó nada o hubo un error, retornamos ID inválido
+
+    ldr x1, =input // Carga la direccion del buffer de entrada para procesar el ID ingresado
+    ldrb w0, [x1] // Lee el primer byte del buffer, que debería ser el ID ingresado
+
+    cmp w0, #'a'
+    blt checkUpperId // Si es menor que 'a', no es una letra minúscula, vamos a verificar si es mayúscula
+    cmp w0, #'z' 
+    bgt checkUpperId // Si es mayor que 'z', no es una letra minúscula, vamos a verificar si es mayúscula
+    sub w0, w0, #32 // Convertimos a mayúscula restando 32 al valor ASCII (a->A, b->B, etc.)
+
+checkUpperId:
+    cmp w0, #'A' 
+    blt invalidMatrixId // Si es menor que 'A', no es una letra mayúscula, ID inválido
+    cmp w0, #'Z'
+    bgt invalidMatrixId // Si es mayor que 'Z', no es una letra mayúscula, ID inválido
+
+    ldp fp, lr, [sp], #0x10 
+    ret
+
+invalidMatrixId:
+    mov x0, #0
+    ldp fp, lr, [sp], #0x10
+    ret
 
 /* -----------------------------------------------------
 * errorInputAskInteger:

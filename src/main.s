@@ -17,12 +17,7 @@
 
 .include "utils.s" // Incluimos el archivo de utilidades
 .include "matrix.s" // Ingreso y almacenamiento de matrices
-/* ---------------------------------------------------------
- * Sección de para reservar espacio
- * --------------------------------------------------------- */
-.section .bss
-  .align 3
-  input: .space 32
+.include "matrixFunctions/transposed.s" // Función para generar matriz transpuesta
 
 /* ---------------------------------------------------------
  * Sección de datos
@@ -41,7 +36,8 @@
     str8: .string "8. Matriz inversa\n"
     str9: .string "9. Determinante\n"
     str10: .string "10. Funciones aritméticas con matrices\n"
-    str11: .string "11. Salir\n"
+    str11: .string "11. Mostrar ultimo resultado\n"
+    str12: .string "12. Salir\n"
     errMsg: .string "Opción no válida, intente de nuevo.\n"
     str1_1: .string "1. Suma de matrices\n"
     str1_2: .string "2. Resta de matrices\n"
@@ -89,6 +85,8 @@ printInitialMenu:
     bl printString
     ldr x0, =str11
     bl printString
+    ldr x0, =str12
+    bl printString
     bl printEnter
 
     // Leemos la opción ingresada en la consola
@@ -121,6 +119,8 @@ printInitialMenu:
     beq case10
     cmp x0, #11
     beq case11
+    cmp x0, #12
+    beq case12
 
     // Si la opción no es válida, imprimimos un mensaje de error
     ldr x0, =errMsg
@@ -128,32 +128,34 @@ printInitialMenu:
     // Volvemos a imprimir el menú inicial
     b printInitialMenu
 
-case1:
+case1: // Ingresar una matriz
     ldr x0, =str1
     bl printString
     bl newMatrix
     b printInitialMenu
 
-case2:
+case2: // Liberar espacio de una matriz
     ldr x0, =str2
     bl printString
     bl freeMatrixById
     b printInitialMenu
   
-case3:
+case3: // Imprimir una matriz
     ldr x0, =str3
     bl printString
     bl printMatrixById
     b printInitialMenu
 
-case4:
+case4: // Generar matriz identidad
     ldr x0, =str4
     bl printString
     b printInitialMenu
 
-case5:
+case5: // Generar matriz transpuesta
     ldr x0, =str5
     bl printString
+    bl setTransposedMatrix
+    bl printLastResult
     b printInitialMenu
 
 case6:
@@ -179,7 +181,13 @@ case9:
 case10: // Funciones aritméticas con matrices
     b printArithmeticMenu
 
-case11: //Salir
+case11: // Mostrar ultimo resultado
+    ldr x0, =str11
+    bl printString
+    bl printLastResult
+    b printInitialMenu
+
+case12: //Salir
     ldr x0, =strExit
     bl printString
     b endProgram
