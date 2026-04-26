@@ -16,6 +16,15 @@
                 },
                 {
                     "text": "set architecture aarch64"
+                },
+                {
+                    "text": "set disassemble-next-line on"
+                },
+                {
+                    "text": "set step-mode on"
+                },
+                {
+                    "text": "set pagination off"
                 }
             ]
         }

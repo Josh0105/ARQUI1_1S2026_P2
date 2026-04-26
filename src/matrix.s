@@ -40,6 +40,7 @@
     strMatrixFreed: .string "Matriz liberada correctamente.\n"
     strMatrixAlreadyFreed: .string "La matriz ya estaba liberada.\n"
     strAskIdUniqueOperation: .string "Ingrese el ID de la matriz a operar (A-Z): "
+    strNotSquare: .string "La matriz no es cuadrada. Operación no válida.\n"
     strSpace: .string " "
 
     .align 2
@@ -627,6 +628,19 @@ generalStrCharInvalid:
     stp fp, lr, [sp, #-0x10]!
     mov fp, sp
     ldr x0, =strCharInvalid
+    bl printString
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* -----------------------------------------------------
+* generalNotSquareMatrix:
+* Funcion general para mostrar mensaje de error cuando se ingresa una matriz no cuadrada
+* no recibe parametros, solo muestra mensaje de error y retorna.
+* ----------------------------------------------------- */
+generalNotSquareMatrix:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+    ldr x0, =strNotSquare
     bl printString
     ldp fp, lr, [sp], #0x10
     ret

@@ -18,6 +18,7 @@
 .include "utils.s" // Incluimos el archivo de utilidades
 .include "matrix.s" // Ingreso y almacenamiento de matrices
 .include "matrixFunctions/transposed.s" // Función para generar matriz transpuesta
+.include "matrixFunctions/identity.s" // Función para generar matriz identidad
 
 /* ---------------------------------------------------------
  * Sección de datos
@@ -149,13 +150,13 @@ case3: // Imprimir una matriz
 case4: // Generar matriz identidad
     ldr x0, =str4
     bl printString
+    bl setIdentityMatrix
     b printInitialMenu
 
 case5: // Generar matriz transpuesta
     ldr x0, =str5
     bl printString
     bl setTransposedMatrix
-    bl printLastResult
     b printInitialMenu
 
 case6:
