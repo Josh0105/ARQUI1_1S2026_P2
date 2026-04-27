@@ -44,6 +44,7 @@
     strAskIdSecondMatrix: .string "Ingrese el ID de la matriz (A-Z) Operador 2: "
     strNoEqualDimensions: .string "Las matrices no tienen dimensiones compatibles para esta operación.\n"
     strNotSquare: .string "La matriz no es cuadrada. Operación no válida.\n"
+    strColsNotEqualRows: .string "El número de columnas del Operador 1 no es igual al número de filas del Operador 2.\n"
     strSpace: .string " "
 
     .align 2
@@ -670,6 +671,19 @@ generalNoEqualDimensions:
     stp fp, lr, [sp, #-0x10]!
     mov fp, sp
     ldr x0, =strNoEqualDimensions
+    bl printString
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* -----------------------------------------------------
+* generalColsNotEqualRows:
+* Funcion general para mostrar error cuando columnas de A no igualan filas de B:
+* no recibe parametros, solo muestra mensaje y retorna.
+* ----------------------------------------------------- */
+generalColsNotEqualRows:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+    ldr x0, =strColsNotEqualRows
     bl printString
     ldp fp, lr, [sp], #0x10
     ret

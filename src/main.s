@@ -19,7 +19,10 @@
 .include "matrix.s" // Ingreso y almacenamiento de matrices
 .include "matrixFunctions/transposed.s" // Función para generar matriz transpuesta
 .include "matrixFunctions/identity.s" // Función para generar matriz identidad
+.include "matrixFunctions/gauss.s" // Función para eliminación de Gauss
 .include "matrixArithmetic/addition.s" // Función para suma de matrices
+.include "matrixArithmetic/multiplication.s" // Función para multiplicación de matrices
+.include "matrixArithmetic/determinant.s" // Función para determinante
 
 /* ---------------------------------------------------------
  * Sección de datos
@@ -163,6 +166,7 @@ case5: // Generar matriz transpuesta
 case6:
     ldr x0, =str6
     bl printString
+    bl setGaussMatrix
     b printInitialMenu
 
 case7:
@@ -178,6 +182,7 @@ case8:
 case9:
     ldr x0, =str9
     bl printString
+    bl setDeterminantMatrix
     b printInitialMenu
 
 case10: // Funciones aritméticas con matrices
@@ -249,6 +254,7 @@ case1_2:
 case1_3:
     ldr x0, =str1_3
     bl printString
+    bl setMultiplicationMatrix
     b printArithmeticMenu
 
 case1_4:
