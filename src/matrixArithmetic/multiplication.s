@@ -42,6 +42,7 @@ mulAskFirstMatrixId:
     b mulAskFirstMatrixId
 
 mulContinueFirstMatrixId:
+    str w0, [fp, #-68] // Guardamos el ID ASCII de la matriz para reutilizarlo en impresión sin volver a preguntar
     bl getMatrixById // Busca matriz operador 1 por ID, retorna puntero en x0, filas en w1, columnas en w2
     str x0, [fp, #-8] // Guardamos puntero operador 1
     str w1, [fp, #-12] // Guardamos filas operador 1
@@ -61,6 +62,7 @@ mulAskSecondMatrixId:
     b mulAskSecondMatrixId
 
 mulContinueSecondMatrixId:
+    str w0, [fp, #-72] // Guardamos el ID ASCII de la matriz para reutilizarlo en impresión sin volver a preguntar
     bl getMatrixById // Busca matriz operador 2 por ID, retorna puntero en x0, filas en w1, columnas en w2
     str x0, [fp, #-24] // Guardamos puntero operador 2
     str w1, [fp, #-28] // Guardamos filas operador 2
@@ -77,7 +79,19 @@ mulValidateMultiplicationDimensions:
     cmp w9, w10
     bne mulColsNotEqualRows // Si columnas de A != filas de B, no se puede multiplicar
 
-    // Si dimensiones son compatibles, liberamos resultado previo y reservamos nueva matriz resultado
+    // Si las dimensiones son compatibles, imprimimos las matrices a operar
+    ldr x0, =strFirstMatrix
+    bl printString
+    bl printEnter
+    ldr w0, [fp, #-68] // Cargamos el ID ASCII de la matriz original 1
+    bl printMatrixByIdNoAsk // Imprime la matriz original usando ID, sin pedirlo nuevamente
+    ldr x0, =strSecondMatrix
+    bl printString
+    bl printEnter
+    ldr w0, [fp, #-72] // Cargamos el ID ASCII de la matriz original 2
+    bl printMatrixByIdNoAsk // Imprime la matriz original usando ID, sin pedirlo nuevamente
+
+    //liberamos resultado previo y reservamos nueva matriz resultado
     // Dimensiones del resultado: filasA x columnasB
     bl freePreviousMatrixResult
     ldr w0, [fp, #-12] // filas resultado = filas de A
@@ -185,7 +199,10 @@ mulColsNotEqualRows:
     b endSetMultiplicationMatrix
 
 mulPrintMultiplicationResult:
+    ldr x0, =strResultado
+    bl printString
     bl printLastResult // Imprime la matriz resultado de la multiplicación
+    bl printEnter
     b endSetMultiplicationMatrix
 
 endSetMultiplicationMatrix:

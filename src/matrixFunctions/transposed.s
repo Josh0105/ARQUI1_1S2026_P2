@@ -1,6 +1,12 @@
 .global setTransposedMatrix
 
 /* ---------------------------------------------------------
+ * Seccion de datos
+ * --------------------------------------------------------- */
+.section .data
+    .align 2
+    strTranspuesta: .string "\nTranspuesta:\n"
+/* ---------------------------------------------------------
  * Seccion de codigo
  * --------------------------------------------------------- */
 .section .text
@@ -44,6 +50,7 @@ askTransposedMatrixId:
     b askTransposedMatrixId
 
 continueTransposedMatrixId:
+    str w0, [fp, #-44] // Guardamos el ID ASCII de la matriz para reutilizarlo en impresión sin volver a preguntar
     bl getMatrixById // Busca la matriz por ID, retorna puntero en x0, filas en w1, columnas en w2
     str x0, [fp, #-8] // Guardamos el puntero de la matriz en el stack
     str w1, [fp, #-12] // Guardamos filas en el stack
@@ -52,7 +59,14 @@ continueTransposedMatrixId:
     cmp x0, #0
     beq matrixNotFoundTransposed // Si no se encontró la matriz por ID,(puntero 0), mostramos mensaje de error
 
-    // Si se encontró liberamos cualquier resultado previo almacenado en matrixResultPointer antes de guardar el nuevo resultado
+    // Si se encontró la matriz, imprimimos la matriz a operar
+    ldr x0, =strFirstMatrix
+    bl printString
+    bl printEnter
+    ldr w0, [fp, #-44] // Cargamos el ID ASCII de la matriz original
+    bl printMatrixByIdNoAsk // Imprime la matriz original usando ID, sin pedirlo nuevamente
+
+    // Liberamos cualquier resultado previo almacenado en matrixResultPointer antes de guardar el nuevo resultado
     bl freePreviousMatrixResult
     // Reservamos memoria para la nueva matriz transpuesta usando matrixMalloc y guardamos su metadata para uso posterior
     ldr w0, [fp, #-16] // Cargamos filas resultado = columnas matriz original
@@ -125,7 +139,10 @@ matrixNotFoundTransposed:
     b endTransposed
 
 printTransposedResult:
+    ldr x0, =strTranspuesta
+    bl printString
     bl printLastResult
+    bl printEnter
     b endTransposed
 
 endTransposed:

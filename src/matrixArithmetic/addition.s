@@ -31,7 +31,7 @@
 setAdditionMatrix:
     stp fp, lr, [sp, #-0x10]!
     mov fp, sp
-    sub sp, sp, #64 // variables locales para operadores y matriz resultado
+    sub sp, sp, #80 // variables locales para operadores y matriz resultado
 
     // Guardamos modo de operación para usarlo dentro del loop (0 suma, 1 resta)
     str w0, [fp, #-60]
@@ -45,6 +45,7 @@ askFirstMatrixId:
     b askFirstMatrixId
 
 continueFirstMatrixId:
+    str w0, [fp, #-64] // Guardamos el ID ASCII de la matriz para reutilizarlo en impresión sin volver a preguntar
     bl getMatrixById // Busca matriz operador 1 por ID, retorna puntero en x0, filas en w1, columnas en w2
     str x0, [fp, #-8] // Guardamos puntero operador 1
     str w1, [fp, #-12] // Guardamos filas operador 1
@@ -64,6 +65,7 @@ askSecondMatrixId:
     b askSecondMatrixId
 
 continueSecondMatrixId:
+    str w0, [fp, #-68] // Guardamos el ID ASCII de la matriz para reutilizarlo en impresión sin volver a preguntar
     bl getMatrixById // Busca matriz operador 2 por ID, retorna puntero en x0, filas en w1, columnas en w2
     str x0, [fp, #-24] // Guardamos puntero operador 2
     str w1, [fp, #-28] // Guardamos filas operador 2
@@ -85,7 +87,20 @@ validateEqualDimensions:
     cmp w9, w10
     bne noEqualDimensions // Si columnas no coinciden, no se puede sumar
 
-    // Si dimensiones son compatibles, liberamos resultado previo y reservamos nueva matriz resultado
+    // Si dimensiones son compatibles imprimimos las matrices a operar
+    // Si se encontró la matriz y es cuadrada la imprimimos
+    ldr x0, =strFirstMatrix
+    bl printString
+    bl printEnter
+    ldr w0, [fp, #-64] // Cargamos el ID ASCII de la matriz original 1
+    bl printMatrixByIdNoAsk // Imprime la matriz original usando ID, sin pedirlo nuevamente
+    ldr x0, =strSecondMatrix
+    bl printString
+    bl printEnter
+    ldr w0, [fp, #-68] // Cargamos el ID ASCII de la matriz original 2
+    bl printMatrixByIdNoAsk // Imprime la matriz original usando ID, sin pedirlo nuevamente
+
+    //liberamos resultado previo y reservamos nueva matriz resultado
     bl freePreviousMatrixResult
     ldr w0, [fp, #-12] // filas resultado = filas operador 1
     ldr w1, [fp, #-16] // columnas resultado = columnas operador 1
@@ -167,10 +182,13 @@ noEqualDimensions:
     b endSetAdditionMatrix
 
 printAdditionResult:
-    bl printLastResult // Imprime la matriz resultado de la suma
+    ldr x0, =strResultado
+    bl printString
+    bl printLastResult // Imprime la matriz resultado de la suma o resta
+    bl printEnter
     b endSetAdditionMatrix
 
 endSetAdditionMatrix:
-    add sp, sp, #64
+    add sp, sp, #80
     ldp fp, lr, [sp], #0x10
     ret

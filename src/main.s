@@ -20,8 +20,11 @@
 .include "matrixFunctions/transposed.s" // Función para generar matriz transpuesta
 .include "matrixFunctions/identity.s" // Función para generar matriz identidad
 .include "matrixFunctions/gauss.s" // Función para eliminación de Gauss
+.include "matrixFunctions/gausJordan.s" // Función para eliminación de Gauss-Jordan
+.include "matrixFunctions/inverse.s" // Función para calcular matriz inversa
 .include "matrixArithmetic/addition.s" // Función para suma de matrices
 .include "matrixArithmetic/multiplication.s" // Función para multiplicación de matrices
+.include "matrixArithmetic/division.s" // Función para división de matrices (A * inv(B))
 .include "matrixArithmetic/determinant.s" // Función para determinante
 
 /* ---------------------------------------------------------
@@ -172,11 +175,13 @@ case6:
 case7:
     ldr x0, =str7
     bl printString
+    bl setGaussJordanMatrix
     b printInitialMenu
 
 case8:
     ldr x0, =str8
     bl printString
+    bl setInverseMatrix
     b printInitialMenu
 
 case9:
@@ -260,6 +265,7 @@ case1_3:
 case1_4:
     ldr x0, =str1_4
     bl printString
+    bl setDivisionMatrix
     b printArithmeticMenu
 
 case1_5:

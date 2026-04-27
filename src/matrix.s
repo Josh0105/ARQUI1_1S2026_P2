@@ -1,6 +1,7 @@
 .global newMatrix
 .global getMatrixById
 .global printMatrixById
+.global printMatrixByIdNoAsk
 .global printLastResult
 .global freeMatrixById
 
@@ -45,6 +46,9 @@
     strNoEqualDimensions: .string "Las matrices no tienen dimensiones compatibles para esta operación.\n"
     strNotSquare: .string "La matriz no es cuadrada. Operación no válida.\n"
     strColsNotEqualRows: .string "El número de columnas del Operador 1 no es igual al número de filas del Operador 2.\n"
+    strFirstMatrix: .string "Operador 1: "
+    strSecondMatrix: .string "Operador 2: "
+    strResultado: .string "\nResultado:\n"
     strSpace: .string " "
 
     .align 2
@@ -258,12 +262,12 @@ endIngresarMatriz:
 
 /* -----------------------------------------------------
 * printMatrixById:
-* Solicita un ID y muestra la matriz asociada en consola.
+* Solicita un ID y delega la impresión a printMatrixByIdNoAsk.
 * ----------------------------------------------------- */
 printMatrixById:
     stp fp, lr, [sp, #-0x10]!
     mov fp, sp
-    sub sp, sp, #48 // Espacio para variables locales: puntero matriz, filas, columnas, i, j
+    sub sp, sp, #16 // Espacio mínimo local para mantener marco consistente
 
 askPrintId:
     ldr x0, =strAskIdPrint
@@ -275,13 +279,33 @@ askPrintId:
     b askPrintId
 
 continuePrintById:
+    bl printMatrixByIdNoAsk // Imprime por ID recibido en x0 sin volver a pedir entrada
+
+endPrintById:
+    add sp, sp, #16 // Liberamos el espacio local del wrapper
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* -----------------------------------------------------
+* printMatrixByIdNoAsk:
+* Recibe un ID en x0 y muestra la matriz asociada en consola sin leer teclado.
+*
+* Entrada:
+* x0 = identificador ASCII de la matriz (A..Z)
+* ----------------------------------------------------- */
+printMatrixByIdNoAsk:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+    sub sp, sp, #48 // Espacio para variables locales: puntero matriz, filas, columnas, i, j
+
+continuePrintByIdNoAsk:
     bl getMatrixById // Busca la matriz por ID, retorna puntero en x0, filas en w1, columnas en w2
     str x0, [fp, #-8] // Guardamos el puntero de la matriz en el stack
     str w1, [fp, #-12] // Guardamos filas en el stack
     str w2, [fp, #-16] // Guardamos columnas en el stack
 
     cmp x0, #0
-    beq matrixNotFoundPrint // Si no se encontró la matriz (puntero 0), mostramos mensaje de error
+    beq matrixNotFoundPrintNoAsk // Si no se encontró la matriz (puntero 0), mostramos mensaje de error
 
     mov w11, #0 // creamos variable i para iterar filas
     str w11, [fp, #-20] // Guardamos i en el stack
@@ -295,7 +319,7 @@ printRowsLoop:
     ldr w11, [fp, #-20] // Carga i
     ldr w9, [fp, #-12]  // Carga total de filas
     cmp w11, w9
-    bge endPrintById // Si terminamos de imprimir todas las filas, salimos
+    bge endPrintByIdNoAsk // Si terminamos de imprimir todas las filas, salimos
     mov w12, #0 // resetea j para cada nueva fila
     str w12, [fp, #-24] // guarda j en el stack
 
@@ -330,8 +354,12 @@ nextPrintRow:
 
 matrixNotFoundPrint:
     bl generalMatrixNotFound // Si no se encontró la matriz, mostramos mensaje de error
+    b endPrintByIdNoAsk
 
-endPrintById: 
+matrixNotFoundPrintNoAsk:
+    bl generalMatrixNotFound // Si no se encontró la matriz, mostramos mensaje de error
+
+endPrintByIdNoAsk:
     add sp, sp, #48
     ldp fp, lr, [sp], #0x10
     ret

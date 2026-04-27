@@ -1,4 +1,5 @@
 .global setGaussMatrix
+.global setGaussMatrixNoAsk
 
 /* ---------------------------------------------------------
  * Seccion de datos
@@ -14,6 +15,41 @@
 
 /* -----------------------------------------------------
 * setGaussMatrix:
+* Wrapper que solicita el ID de la matriz y delega el trabajo real a
+* setGaussMatrixNoAsk.
+*
+* Entrada:
+* Por teclado (ID de matriz)
+*
+* Retorno:
+* x0 = puntero de la matriz resultado C
+* x1 = signo acumulado por swaps (+1 o -1), útil para el determinante
+* ----------------------------------------------------- */
+setGaussMatrix:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
+    sub sp, sp, #16 // Espacio mínimo para mantener el marco consistente
+
+gaussAskMatrixId:
+    // Pedimos el ID de la matriz origen. Si el usuario ingresa algo inválido, repetimos.
+    ldr x0, =strAskIdUniqueOperation
+    bl printString // Imprime "Ingrese el ID de la matriz a operar (A-Z): "
+    bl readMatrixIdFromConsole // Lee ID, retorna 0 si es inválido
+    cmp x0, #0
+    bne gaussCallNoAsk
+    bl generalStrCharInvalid
+    b gaussAskMatrixId
+
+gaussCallNoAsk:
+    bl setGaussMatrixNoAsk
+
+gaussWrapperEnd:
+    add sp, sp, #16
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* -----------------------------------------------------
+* setGaussMatrixNoAsk:
 * Aplica eliminación de Gauss sobre una copia C de la matriz A usando Bareiss
 * para mantener operaciones enteras sin usar decimales.
 *
@@ -24,13 +60,13 @@
 * 4) Termina con C triangular superior y mantiene signo de swaps
 *
 * Entrada:
-* Por teclado (ID de matriz)
+* x0 = ID de la matriz a operar
 *
 * Retorno:
 * x0 = puntero de la matriz resultado C
 * x1 = signo de swaps (+1 o -1), útil para el determinante
 * ----------------------------------------------------- */
-setGaussMatrix:
+setGaussMatrixNoAsk:
     stp fp, lr, [sp, #-0x10]!
     mov fp, sp
     sub sp, sp, #96 // locales: A, C, n, i, j, k, r, prevPivot, swapSign
@@ -51,26 +87,17 @@ setGaussMatrix:
 * -60 = swapSign      // signo acumulado por intercambios de filas
 ----------------------------------------------------- */
 
-gaussAskMatrixId:
-    // Pedimos el ID de la matriz origen. Si el usuario ingresa algo inválido, repetimos.
-    ldr x0, =strAskIdUniqueOperation
-    bl printString // Imprime "Ingrese el ID de la matriz a operar (A-Z): "
-    bl readMatrixIdFromConsole // Lee ID, retorna 0 si es inválido
-    cmp x0, #0
-    bne gaussContinueMatrixId
-    bl generalStrCharInvalid
-    b gaussAskMatrixId
-
 gaussContinueMatrixId:
     // Buscamos la matriz original A y guardamos su puntero y dimensiones.
+    str w0, [fp, #-64] // Guardamos el ID ASCII de la matriz para reutilizarlo en impresión sin volver a preguntar
     bl getMatrixById // retorna puntero en x0, filas en w1, columnas en w2
     str x0, [fp, #-8] // Guardamos puntero de A
     str w1, [fp, #-12] // Guardamos filas de A
     str w2, [fp, #-16] // Guardamos columnas de A
 
     cmp x0, #0
-    bne gaussValidateSquare
-    bl generalMatrixNotFound
+    bne gaussValidateSquare // Si se encontró la matriz, validamos que sea cuadrada para aplicar Gauss/Bareiss.
+    bl generalMatrixNotFound // Si no se encontró la matriz por ID, mostramos mensaje de error
     b gaussEnd
 
 gaussValidateSquare:
@@ -83,6 +110,14 @@ gaussValidateSquare:
     b gaussEnd
 
 gaussPrepareResult:
+    // Si la matriz es cuadrada, imprimimos la matriz original a operar.
+    ldr x0, =strFirstMatrix
+    bl printString
+    bl printEnter
+    ldr w0, [fp, #-64] // Cargamos el ID ASCII de la matriz original
+    bl printMatrixByIdNoAsk // Imprime la matriz original usando ID, sin pedirlo nuevamente
+    bl printEnter
+
     // Liberamos cualquier resultado previo y reservamos C con las mismas dimensiones que A.
     bl freePreviousMatrixResult
     ldr w0, [fp, #-12] // filas resultado
@@ -359,6 +394,10 @@ gaussUpdatePrevPivot:
     // Actualizamos prevPivot con el pivote que acabamos de usar.
     str x1, [fp, #-56] // prevPivot = pivot actual para la próxima iteración de Bareiss
 
+    // Mostramos la matriz resultante al cerrar esta iteración completa de eliminación.
+    bl printLastResult
+    bl printEnter
+
     // Avanzamos al siguiente pivote diagonal.
     ldr w9, [fp, #-44] // Cargamos k
     add w9, w9, #1 //Sumamos 1 para avanzar al siguiente pivote diagonal
@@ -366,8 +405,7 @@ gaussUpdatePrevPivot:
     b gaussKLoop
 
 gaussPrintResult:
-    // Al terminar, imprimimos C ya triangular superior y el signo acumulado de swaps.
-    bl printLastResult
+    // Al terminar, solo mostramos el signo acumulado de swaps.
     ldr x0, =strGaussSwapSign
     bl printString
     ldr w0, [fp, #-60] // swapSign

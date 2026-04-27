@@ -1,10 +1,15 @@
 .global setIdentityMatrix
+/* ---------------------------------------------------------
+ * Seccion de datos
+ * --------------------------------------------------------- */
+.section .data
+    .align 2
+    strIdentity: .string "\nIdentidad:\n"
 
 /* ---------------------------------------------------------
  * Seccion de codigo
  * --------------------------------------------------------- */
 .section .text
-
 /* -----------------------------------------------------
 * setIdentityMatrix:
 * Genera la matriz identidad de tamaño n x n solicitada por el usuario y la guarda como resultado. 
@@ -32,6 +37,7 @@ askIdentityMatrixId:
     b askIdentityMatrixId
 
 continueIdentityMatrixId:
+    str w0, [fp, #-44] // Guardamos el ID ASCII de la matriz para reutilizarlo en impresión sin volver a preguntar
     bl getMatrixById // Busca la matriz por ID, retorna puntero en x0, filas en w1, columnas en w2
     str x0, [fp, #-8] // Guardamos el puntero de la matriz origen
     str w1, [fp, #-12] // Guardamos filas de la matriz origen
@@ -43,7 +49,14 @@ continueIdentityMatrixId:
     cmp w1, w2
     bne notSquareMatrixIdentity // Si la matriz no es cuadrada (filas != columnas), mostramos mensaje de error
 
-    // Si se encontró y es cuadrada, liberamos cualquier resultado previo almacenado en matrixResultPointer antes de guardar el nuevo resultado
+    // Si se encontró la matriz y es cuadrada la imprimimos
+    ldr x0, =strFirstMatrix
+    bl printString
+    bl printEnter
+    ldr w0, [fp, #-44] // Cargamos el ID ASCII de la matriz original
+    bl printMatrixByIdNoAsk // Imprime la matriz original usando ID, sin pedirlo nuevamente
+
+    // liberamos cualquier resultado previo almacenado en matrixResultPointer antes de guardar el nuevo resultado
     bl freePreviousMatrixResult
     // Reservamos memoria para la nueva matriz identidad usando matrixMalloc y guardamos su metadata para uso posterior
     ldr w0, [fp, #-12] // Cargamos filas = columnas para la matriz identidad
@@ -94,7 +107,10 @@ matrixNotFoundIdentity:
     b endSetIdentityMatrix
 
 printIdentityResult:
+    ldr x0, =strIdentity
+    bl printString
     bl printLastResult // Imprime la matriz resultado (identidad) usando la función de impresión general
+    bl printEnter
     b endSetIdentityMatrix
 
 endSetIdentityMatrix:

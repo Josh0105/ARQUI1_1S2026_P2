@@ -1,10 +1,12 @@
 .global setDeterminantMatrix
+.global setDeterminantMatrixNoAsk
 /* ---------------------------------------------------------
  * Seccion de datos
  * --------------------------------------------------------- */
 .section .data
     .align 2
     strDeterminante: .string "Determinante: "
+    strDeterminanteBareiss: .string "Primero operamos Bareiss para la determinante: \n"
 
 /* ---------------------------------------------------------
  * Seccion de codigo
@@ -13,16 +15,11 @@
 
 /* -----------------------------------------------------
 * setDeterminantMatrix:
-* Calcula el determinante apoyandose en setGaussMatrix (Bareiss).
-* setGaussMatrix deja una matriz triangular C y retorna:
-* x0 = puntero de C
-* x1 = signo acumulado por swaps (+1 o -1)
-*
-* Para Bareiss, el determinante queda en C[n-1][n-1].
-* Luego se aplica el signo de swaps y se guarda como matriz resultado 1x1.
+* Wrapper que solicita el ID de la matriz, la imprime y delega el cálculo
+* real a setDeterminantMatrixNoAsk.
 *
 * Entrada:
-* Por teclado (la solicita setGaussMatrix)
+* Por teclado (ID de matriz)
 *
 * Retorno:
 * Se almacena la matriz resultado 1x1 con el determinante en matrixResultPointer.
@@ -30,10 +27,53 @@
 setDeterminantMatrix:
     stp fp, lr, [sp, #-0x10]!
     mov fp, sp
+    sub sp, sp, #16 // Espacio mínimo para guardar el ID seleccionado
+
+determinantAskMatrixId:
+    ldr x0, =strAskIdUniqueOperation
+    bl printString // Imprime "Ingrese el ID de la matriz a operar (A-Z): "
+    bl readMatrixIdFromConsole // Lee ID, retorna 0 si es inválido
+    cmp x0, #0
+    bne determinantPrintInstr// Si id es valido imprimimos que calcularemos gauus primero
+    bl generalStrCharInvalid
+    b determinantAskMatrixId
+
+determinantPrintInstr:
+    str w0, [fp, #-8] // Guardamos el ID para reutilizarlo en la impresión y en Gauss
+    ldr x0, =strDeterminanteBareiss
+    bl printString // Avisamos que la operación usará Bareiss para el determinante
+
+    ldr w0, [fp, #-8] // Recuperamos el ID para delegar el cálculo
+    bl setDeterminantMatrixNoAsk
+
+determinantWrapperEnd:
+    add sp, sp, #16
+    ldp fp, lr, [sp], #0x10
+    ret
+
+/* -----------------------------------------------------
+* setDeterminantMatrixNoAsk:
+* Calcula el determinante apoyandose en setGaussMatrixNoAsk (Bareiss).
+* setGaussMatrixNoAsk deja una matriz triangular C y retorna:
+* x0 = puntero de C
+* x1 = signo acumulado por swaps (+1 o -1)
+*
+* Para Bareiss, el determinante queda en C[n-1][n-1].
+* Luego se aplica el signo de swaps y se guarda como matriz resultado 1x1.
+*
+* Entrada:
+* x0 = ID de la matriz a operar
+*
+* Retorno:
+* Se almacena la matriz resultado 1x1 con el determinante en matrixResultPointer.
+* ----------------------------------------------------- */
+setDeterminantMatrixNoAsk:
+    stp fp, lr, [sp, #-0x10]!
+    mov fp, sp
     sub sp, sp, #48 // locales: puntero matriz Gauss, signo swaps, n, resultado final
 
     // Reutilizamos Gauss/Bareiss para validar y triangularizar.
-    bl setGaussMatrix
+    bl setGaussMatrixNoAsk
     str x0, [fp, #-8] // Puntero de la matriz resultado de Gauss (matriz triangular C)
     str x1, [fp, #-16] // Signo acumulado por swaps durante Gauss
 
@@ -73,6 +113,7 @@ setDeterminantMatrix:
     bl printString
 
     bl printLastResult
+    bl printEnter
 
 determinantEnd:
     add sp, sp, #48
