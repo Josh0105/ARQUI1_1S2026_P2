@@ -1,0 +1,25 @@
+digraph multiplication_flow {
+  rankdir=TB;
+  node [shape=box, fontname="Helvetica"];
+
+  start [label="setMultiplicationMatrix"];
+  alloc [label="mallocResultMatrix"];
+
+  loop_i [label="mulRowsLoop (i)"];
+  loop_j [label="mulColsLoop (j)"];
+  loop_k [label="mulInnerLoop (k)"];
+  store [label="mulStoreMulResult"];
+
+  print [label="printLastResult"];
+  end [label="endSetMultiplicationMatrix"];
+
+  start -> alloc -> loop_i;
+  loop_i -> loop_j;
+  loop_j -> loop_k;
+  loop_k -> loop_k [label="k++"];
+  loop_k -> store [label="fin k"];
+  store -> loop_j [label="j++"];
+  loop_j -> loop_i [label="fin j, i++"];
+  loop_i -> print [label="fin i"];
+  print -> end;
+}

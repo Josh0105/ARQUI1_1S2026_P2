@@ -1,0 +1,41 @@
+digraph gauss_flow {
+  rankdir=TB;
+  node [shape=box, fontname="Helvetica"];
+
+  start [label="setGaussMatrixNoAsk"];
+  copy_i [label="gaussCopyRowsLoop (i)"];
+  copy_j [label="gaussCopyColsLoop (j)"];
+
+  kloop [label="gaussKLoop (k)"];
+  find_pivot [label="gaussFindPivotRowLoop (r)"];
+  swap_j [label="gaussSwapColsLoop (j)"];
+
+  iloop [label="gaussILoop (i)"];
+  jloop [label="gaussJLoop (j)"];
+  store [label="gaussStoreBareissValue"];
+  zero_col [label="gaussZeroBelowPivot"];
+  update_prev [label="gaussUpdatePrevPivot"];
+
+  print_sign [label="gaussPrintResult (signo swaps)"];
+  end [label="gaussEnd"];
+
+  start -> copy_i;
+  copy_i -> copy_j;
+  copy_j -> copy_i [label="fin j, i++"];
+  copy_i -> kloop [label="fin i"];
+
+  kloop -> find_pivot;
+  find_pivot -> swap_j [label="pivot swap"];
+  find_pivot -> iloop [label="pivot ok"];
+  swap_j -> kloop [label="fin swap"];
+
+  iloop -> jloop;
+  jloop -> store -> jloop [label="j++"];
+  jloop -> zero_col [label="fin j"];
+  zero_col -> iloop [label="i++"];
+  iloop -> update_prev [label="fin i"];
+  update_prev -> kloop [label="k++"];
+
+  kloop -> print_sign [label="fin k"];
+  print_sign -> end;
+}

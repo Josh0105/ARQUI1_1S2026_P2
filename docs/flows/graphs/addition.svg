@@ -1,0 +1,291 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="541pt" height="1237pt" viewBox="0.00 0.00 540.92 1237.20">
+<g id="graph0" class="graph" transform="translate(4,1233.199951171875) scale(1)" data-name="addition_flow">
+
+<polygon fill="white" stroke="none" points="-4,4 -4,-1233.2 536.92,-1233.2 536.92,4 -4,4" style=""/>
+<!-- start -->
+<g id="node1" class="node" pointer-events="visible" data-name="start">
+
+<polygon fill="none" stroke="black" points="454.65,-1229.2 330.89,-1229.2 330.89,-1193.2 454.65,-1193.2 454.65,-1229.2" style=""/>
+<text text-anchor="middle" x="392.77" y="-1207" font-family="Helvetica,sans-Serif" font-size="14.00" style="">setAdditionMatrix</text>
+</g>
+<!-- ask1 -->
+<g id="node2" class="node" pointer-events="visible" data-name="ask1">
+
+<polygon fill="none" stroke="black" points="474.31,-1156.2 311.23,-1156.2 311.23,-1120.2 474.31,-1120.2 474.31,-1156.2" style=""/>
+<text text-anchor="middle" x="392.77" y="-1134" font-family="Helvetica,sans-Serif" font-size="14.00" style="">generalAskIdFirstMatrix</text>
+</g>
+<!-- start&#45;&gt;ask1 -->
+<g id="edge1" class="edge" data-name="start-&gt;ask1">
+
+<path fill="none" stroke="black" d="M392.77,-1193.01C392.77,-1185.43 392.77,-1176.3 392.77,-1167.74" style=""/>
+<polygon fill="black" stroke="black" points="396.27,-1167.74 392.77,-1157.74 389.27,-1167.74 396.27,-1167.74" style=""/>
+</g>
+<!-- read1 -->
+<g id="node3" class="node" pointer-events="visible" data-name="read1">
+
+<polygon fill="none" stroke="black" points="423.61,-1083.2 245.94,-1083.2 245.94,-1047.2 423.61,-1047.2 423.61,-1083.2" style=""/>
+<text text-anchor="middle" x="334.77" y="-1061" font-family="Helvetica,sans-Serif" font-size="14.00" style="">readMatrixIdFromConsole</text>
+</g>
+<!-- ask1&#45;&gt;read1 -->
+<g id="edge2" class="edge" data-name="ask1-&gt;read1">
+
+<path fill="none" stroke="black" d="M378.73,-1120.01C371.89,-1111.64 363.52,-1101.4 355.93,-1092.1" style=""/>
+<polygon fill="black" stroke="black" points="358.68,-1089.93 349.64,-1084.4 353.26,-1094.36 358.68,-1089.93" style=""/>
+</g>
+<!-- get1 -->
+<g id="node4" class="node" pointer-events="visible" data-name="get1">
+
+<polygon fill="none" stroke="black" points="396.91,-1010.2 272.63,-1010.2 272.63,-974.2 396.91,-974.2 396.91,-1010.2" style=""/>
+<text text-anchor="middle" x="334.77" y="-988" font-family="Helvetica,sans-Serif" font-size="14.00" style="">getMatrixById (A)</text>
+</g>
+<!-- read1&#45;&gt;get1 -->
+<g id="edge3" class="edge" data-name="read1-&gt;get1">
+
+<path fill="none" stroke="black" d="M334.77,-1047.01C334.77,-1039.43 334.77,-1030.3 334.77,-1021.74" style=""/>
+<polygon fill="black" stroke="black" points="338.27,-1021.74 334.77,-1011.74 331.27,-1021.74 338.27,-1021.74" style=""/>
+</g>
+<!-- notfound1 -->
+<g id="node5" class="node" pointer-events="visible" data-name="notfound1">
+
+<polygon fill="none" stroke="black" points="533.07,-921.4 370.48,-921.4 370.48,-885.4 533.07,-885.4 533.07,-921.4" style=""/>
+<text text-anchor="middle" x="451.77" y="-899.2" font-family="Helvetica,sans-Serif" font-size="14.00" style="">generalMatrixNotFound</text>
+</g>
+<!-- get1&#45;&gt;notfound1 -->
+<g id="edge5" class="edge" data-name="get1-&gt;notfound1">
+
+<path fill="none" stroke="black" d="M358.17,-973.84C375.7,-960.83 399.92,-942.87 419.33,-928.47" style=""/>
+<polygon fill="black" stroke="black" points="421.26,-931.4 427.2,-922.63 417.08,-925.78 421.26,-931.4" style=""/>
+<text text-anchor="middle" x="413.66" y="-943.6" font-family="Times,serif" font-size="14.00" style="">null</text>
+</g>
+<!-- ask2 -->
+<g id="node6" class="node" pointer-events="visible" data-name="ask2">
+
+<polygon fill="none" stroke="black" points="352.58,-921.4 168.96,-921.4 168.96,-885.4 352.58,-885.4 352.58,-921.4" style=""/>
+<text text-anchor="middle" x="260.77" y="-899.2" font-family="Helvetica,sans-Serif" font-size="14.00" style="">generalAskIdSecondMatrix</text>
+</g>
+<!-- get1&#45;&gt;ask2 -->
+<g id="edge4" class="edge" data-name="get1-&gt;ask2">
+
+<path fill="none" stroke="black" d="M320.15,-974.05C309.48,-961.53 294.82,-944.34 282.74,-930.17" style=""/>
+<polygon fill="black" stroke="black" points="285.75,-928.3 276.6,-922.96 280.42,-932.84 285.75,-928.3" style=""/>
+<text text-anchor="middle" x="310.77" y="-943.6" font-family="Times,serif" font-size="14.00" style="">ok</text>
+</g>
+<!-- notfound1&#45;&gt;ask1 -->
+<g id="edge6" class="edge" data-name="notfound1-&gt;ask1">
+
+<path fill="none" stroke="black" d="M452.88,-921.87C454.34,-954.7 454.54,-1027.36 432.77,-1083.2 428.89,-1093.15 422.67,-1102.89 416.28,-1111.3" style=""/>
+<polygon fill="black" stroke="black" points="413.63,-1109.01 410.06,-1118.99 419.07,-1113.41 413.63,-1109.01" style=""/>
+</g>
+<!-- read2 -->
+<g id="node7" class="node" pointer-events="visible" data-name="read2">
+
+<polygon fill="none" stroke="black" points="291.61,-848.4 113.94,-848.4 113.94,-812.4 291.61,-812.4 291.61,-848.4" style=""/>
+<text text-anchor="middle" x="202.77" y="-826.2" font-family="Helvetica,sans-Serif" font-size="14.00" style="">readMatrixIdFromConsole</text>
+</g>
+<!-- ask2&#45;&gt;read2 -->
+<g id="edge7" class="edge" data-name="ask2-&gt;read2">
+
+<path fill="none" stroke="black" d="M246.73,-885.21C239.89,-876.84 231.52,-866.6 223.93,-857.3" style=""/>
+<polygon fill="black" stroke="black" points="226.68,-855.13 217.64,-849.6 221.26,-859.56 226.68,-855.13" style=""/>
+</g>
+<!-- get2 -->
+<g id="node8" class="node" pointer-events="visible" data-name="get2">
+
+<polygon fill="none" stroke="black" points="264.91,-775.4 140.63,-775.4 140.63,-739.4 264.91,-739.4 264.91,-775.4" style=""/>
+<text text-anchor="middle" x="202.77" y="-753.2" font-family="Helvetica,sans-Serif" font-size="14.00" style="">getMatrixById (B)</text>
+</g>
+<!-- read2&#45;&gt;get2 -->
+<g id="edge8" class="edge" data-name="read2-&gt;get2">
+
+<path fill="none" stroke="black" d="M202.77,-812.21C202.77,-804.63 202.77,-795.5 202.77,-786.94" style=""/>
+<polygon fill="black" stroke="black" points="206.27,-786.94 202.77,-776.94 199.27,-786.94 206.27,-786.94" style=""/>
+</g>
+<!-- notfound2 -->
+<g id="node9" class="node" pointer-events="visible" data-name="notfound2">
+
+<polygon fill="none" stroke="black" points="401.07,-686.6 238.48,-686.6 238.48,-650.6 401.07,-650.6 401.07,-686.6" style=""/>
+<text text-anchor="middle" x="319.77" y="-664.4" font-family="Helvetica,sans-Serif" font-size="14.00" style="">generalMatrixNotFound</text>
+</g>
+<!-- get2&#45;&gt;notfound2 -->
+<g id="edge10" class="edge" data-name="get2-&gt;notfound2">
+
+<path fill="none" stroke="black" d="M226.17,-739.04C243.7,-726.03 267.92,-708.07 287.33,-693.67" style=""/>
+<polygon fill="black" stroke="black" points="289.26,-696.6 295.2,-687.83 285.08,-690.98 289.26,-696.6" style=""/>
+<text text-anchor="middle" x="281.66" y="-708.8" font-family="Times,serif" font-size="14.00" style="">null</text>
+</g>
+<!-- validate -->
+<g id="node10" class="node" pointer-events="visible" data-name="validate">
+
+<polygon fill="none" stroke="black" points="220.47,-686.6 47.07,-686.6 47.07,-650.6 220.47,-650.6 220.47,-686.6" style=""/>
+<text text-anchor="middle" x="133.77" y="-664.4" font-family="Helvetica,sans-Serif" font-size="14.00" style="">validateEqualDimensions</text>
+</g>
+<!-- get2&#45;&gt;validate -->
+<g id="edge9" class="edge" data-name="get2-&gt;validate">
+
+<path fill="none" stroke="black" d="M189.14,-739.25C179.28,-726.85 165.78,-709.87 154.58,-695.78" style=""/>
+<polygon fill="black" stroke="black" points="157.52,-693.85 148.55,-688.2 152.04,-698.2 157.52,-693.85" style=""/>
+<text text-anchor="middle" x="181.77" y="-708.8" font-family="Times,serif" font-size="14.00" style="">ok</text>
+</g>
+<!-- notfound2&#45;&gt;ask2 -->
+<g id="edge11" class="edge" data-name="notfound2-&gt;ask2">
+
+<path fill="none" stroke="black" d="M320.88,-687.07C322.34,-719.9 322.54,-792.56 300.77,-848.4 296.89,-858.35 290.67,-868.09 284.28,-876.5" style=""/>
+<polygon fill="black" stroke="black" points="281.63,-874.21 278.06,-884.19 287.07,-878.61 281.63,-874.21" style=""/>
+</g>
+<!-- noeq -->
+<g id="node11" class="node" pointer-events="visible" data-name="noeq">
+
+<polygon fill="none" stroke="black" points="189.32,-543.8 0.23,-543.8 0.23,-507.8 189.32,-507.8 189.32,-543.8" style=""/>
+<text text-anchor="middle" x="94.77" y="-521.6" font-family="Helvetica,sans-Serif" font-size="14.00" style="">generalNoEqualDimensions</text>
+</g>
+<!-- validate&#45;&gt;noeq -->
+<g id="edge13" class="edge" data-name="validate-&gt;noeq">
+
+<path fill="none" stroke="black" d="M122.76,-650.32C119.66,-644.83 116.55,-638.61 114.39,-632.6 105.33,-607.35 100.26,-577.13 97.56,-555.47" style=""/>
+<polygon fill="black" stroke="black" points="101.04,-555.14 96.43,-545.61 94.09,-555.94 101.04,-555.14" style=""/>
+<text text-anchor="middle" x="139.46" y="-620" font-family="Times,serif" font-size="14.00" style="">dims fail</text>
+</g>
+<!-- printA -->
+<g id="node12" class="node" pointer-events="visible" data-name="printA">
+
+<polygon fill="none" stroke="black" points="301.42,-597.8 128.13,-597.8 128.13,-561.8 301.42,-561.8 301.42,-597.8" style=""/>
+<text text-anchor="middle" x="214.77" y="-575.6" font-family="Helvetica,sans-Serif" font-size="14.00" style="">printMatrixByIdNoAsk (A)</text>
+</g>
+<!-- validate&#45;&gt;printA -->
+<g id="edge12" class="edge" data-name="validate-&gt;printA">
+
+<path fill="none" stroke="black" d="M149.77,-650.45C161.46,-637.93 177.5,-620.74 190.72,-606.57" style=""/>
+<polygon fill="black" stroke="black" points="193.23,-609.02 197.49,-599.32 188.11,-604.24 193.23,-609.02" style=""/>
+<text text-anchor="middle" x="204.14" y="-620" font-family="Times,serif" font-size="14.00" style="">dims ok</text>
+</g>
+<!-- end -->
+<g id="node21" class="node" pointer-events="visible" data-name="end">
+
+<polygon fill="none" stroke="black" points="197.35,-109 48.2,-109 48.2,-73 197.35,-73 197.35,-109" style=""/>
+<text text-anchor="middle" x="122.77" y="-86.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">endSetAdditionMatrix</text>
+</g>
+<!-- noeq&#45;&gt;end -->
+<g id="edge14" class="edge" data-name="noeq-&gt;end">
+
+<path fill="none" stroke="black" d="M92.6,-507.44C90.54,-489.52 87.77,-460.75 87.77,-435.8 87.77,-435.8 87.77,-435.8 87.77,-163 87.77,-147.28 94.76,-131.43 102.5,-118.7" style=""/>
+<polygon fill="black" stroke="black" points="105.32,-120.77 107.9,-110.49 99.48,-116.92 105.32,-120.77" style=""/>
+</g>
+<!-- printB -->
+<g id="node13" class="node" pointer-events="visible" data-name="printB">
+
+<polygon fill="none" stroke="black" points="303.42,-489.8 130.13,-489.8 130.13,-453.8 303.42,-453.8 303.42,-489.8" style=""/>
+<text text-anchor="middle" x="216.77" y="-467.6" font-family="Helvetica,sans-Serif" font-size="14.00" style="">printMatrixByIdNoAsk (B)</text>
+</g>
+<!-- printA&#45;&gt;printB -->
+<g id="edge15" class="edge" data-name="printA-&gt;printB">
+
+<path fill="none" stroke="black" d="M215.09,-561.77C215.4,-545.56 215.87,-520.86 216.23,-501.59" style=""/>
+<polygon fill="black" stroke="black" points="219.73,-501.72 216.42,-491.65 212.73,-501.59 219.73,-501.72" style=""/>
+</g>
+<!-- freePrev -->
+<g id="node14" class="node" pointer-events="visible" data-name="freePrev">
+
+<polygon fill="none" stroke="black" points="306.16,-416.8 133.39,-416.8 133.39,-380.8 306.16,-380.8 306.16,-416.8" style=""/>
+<text text-anchor="middle" x="219.77" y="-394.6" font-family="Helvetica,sans-Serif" font-size="14.00" style="">freePreviousMatrixResult</text>
+</g>
+<!-- printB&#45;&gt;freePrev -->
+<g id="edge16" class="edge" data-name="printB-&gt;freePrev">
+
+<path fill="none" stroke="black" d="M217.5,-453.61C217.82,-445.94 218.21,-436.69 218.58,-428.04" style=""/>
+<polygon fill="black" stroke="black" points="222.06,-428.48 218.99,-418.34 215.07,-428.18 222.06,-428.48" style=""/>
+</g>
+<!-- alloc -->
+<g id="node15" class="node" pointer-events="visible" data-name="alloc">
+
+<polygon fill="none" stroke="black" points="292.02,-343.8 157.52,-343.8 157.52,-307.8 292.02,-307.8 292.02,-343.8" style=""/>
+<text text-anchor="middle" x="224.77" y="-321.6" font-family="Helvetica,sans-Serif" font-size="14.00" style="">mallocResultMatrix</text>
+</g>
+<!-- freePrev&#45;&gt;alloc -->
+<g id="edge17" class="edge" data-name="freePrev-&gt;alloc">
+
+<path fill="none" stroke="black" d="M220.98,-380.61C221.52,-372.94 222.17,-363.69 222.78,-355.04" style=""/>
+<polygon fill="black" stroke="black" points="226.26,-355.56 223.47,-345.34 219.27,-355.07 226.26,-355.56" style=""/>
+</g>
+<!-- loop_i -->
+<g id="node16" class="node" pointer-events="visible" data-name="loop_i">
+
+<polygon fill="none" stroke="black" points="308.29,-270.8 161.25,-270.8 161.25,-234.8 308.29,-234.8 308.29,-270.8" style=""/>
+<text text-anchor="middle" x="234.77" y="-248.6" font-family="Helvetica,sans-Serif" font-size="14.00" style="">additionRowsLoop (i)</text>
+</g>
+<!-- alloc&#45;&gt;loop_i -->
+<g id="edge18" class="edge" data-name="alloc-&gt;loop_i">
+
+<path fill="none" stroke="black" d="M227.19,-307.61C228.27,-299.94 229.58,-290.69 230.79,-282.04" style=""/>
+<polygon fill="black" stroke="black" points="234.23,-282.72 232.16,-272.33 227.3,-281.74 234.23,-282.72" style=""/>
+</g>
+<!-- loop_j -->
+<g id="node17" class="node" pointer-events="visible" data-name="loop_j">
+
+<polygon fill="none" stroke="black" points="383.79,-182 243.75,-182 243.75,-146 383.79,-146 383.79,-182" style=""/>
+<text text-anchor="middle" x="313.77" y="-159.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">additionColsLoop (j)</text>
+</g>
+<!-- loop_i&#45;&gt;loop_j -->
+<g id="edge19" class="edge" data-name="loop_i-&gt;loop_j">
+
+<path fill="none" stroke="black" d="M269.84,-234.36C277.42,-229.44 284.91,-223.55 290.77,-216.8 296.78,-209.88 301.46,-201.13 304.99,-192.81" style=""/>
+<polygon fill="black" stroke="black" points="308.17,-194.3 308.43,-183.71 301.62,-191.82 308.17,-194.3" style=""/>
+</g>
+<!-- print -->
+<g id="node20" class="node" pointer-events="visible" data-name="print">
+
+<polygon fill="none" stroke="black" points="225.65,-182 115.89,-182 115.89,-146 225.65,-146 225.65,-182" style=""/>
+<text text-anchor="middle" x="170.77" y="-159.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">printLastResult</text>
+</g>
+<!-- loop_i&#45;&gt;print -->
+<g id="edge20" class="edge" data-name="loop_i-&gt;print">
+
+<path fill="none" stroke="black" d="M209.17,-234.43C202.91,-229.3 196.63,-223.3 191.83,-216.8 186.59,-209.72 182.42,-201.14 179.22,-193.03" style=""/>
+<polygon fill="black" stroke="black" points="182.61,-192.1 175.95,-183.86 176.01,-194.45 182.61,-192.1" style=""/>
+<text text-anchor="middle" x="204.24" y="-204.2" font-family="Times,serif" font-size="14.00" style="">fin i</text>
+</g>
+<!-- loop_j&#45;&gt;loop_i -->
+<g id="edge24" class="edge" data-name="loop_j-&gt;loop_i">
+
+<path fill="none" stroke="black" d="M256.44,-182.35C248.88,-186.94 242.06,-192.73 237.15,-200 232.61,-206.72 230.97,-215.12 230.75,-223.18" style=""/>
+<polygon fill="black" stroke="black" points="227.25,-223.19 231.21,-233.02 234.24,-222.87 227.25,-223.19" style=""/>
+<text text-anchor="middle" x="261.58" y="-204.2" font-family="Times,serif" font-size="14.00" style="">fin j, i++</text>
+</g>
+<!-- op -->
+<g id="node18" class="node" pointer-events="visible" data-name="op">
+
+<polygon fill="none" stroke="black" points="358.23,-109 233.31,-109 233.31,-73 358.23,-73 358.23,-109" style=""/>
+<text text-anchor="middle" x="295.77" y="-86.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">doAddition / resta</text>
+</g>
+<!-- loop_j&#45;&gt;op -->
+<g id="edge21" class="edge" data-name="loop_j-&gt;op">
+
+<path fill="none" stroke="black" d="M309.41,-145.81C307.45,-138.05 305.07,-128.68 302.86,-119.95" style=""/>
+<polygon fill="black" stroke="black" points="306.31,-119.33 300.46,-110.5 299.53,-121.05 306.31,-119.33" style=""/>
+</g>
+<!-- store -->
+<g id="node19" class="node" pointer-events="visible" data-name="store">
+
+<polygon fill="none" stroke="black" points="408.9,-36 272.64,-36 272.64,0 408.9,0 408.9,-36" style=""/>
+<text text-anchor="middle" x="340.77" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">storeAddSubResult</text>
+</g>
+<!-- op&#45;&gt;store -->
+<g id="edge22" class="edge" data-name="op-&gt;store">
+
+<path fill="none" stroke="black" d="M306.67,-72.81C311.86,-64.62 318.19,-54.62 323.99,-45.48" style=""/>
+<polygon fill="black" stroke="black" points="326.77,-47.63 329.17,-37.31 320.86,-43.88 326.77,-47.63" style=""/>
+</g>
+<!-- store&#45;&gt;loop_j -->
+<g id="edge23" class="edge" data-name="store-&gt;loop_j">
+
+<path fill="none" stroke="black" d="M352.54,-36.29C363.52,-54.68 376.8,-84.46 366.77,-109 362.34,-119.85 354.55,-129.7 346.29,-137.93" style=""/>
+<polygon fill="black" stroke="black" points="344.07,-135.21 339.09,-144.56 348.82,-140.36 344.07,-135.21" style=""/>
+</g>
+<!-- print&#45;&gt;end -->
+<g id="edge25" class="edge" data-name="print-&gt;end">
+
+<path fill="none" stroke="black" d="M159.15,-145.81C153.61,-137.62 146.86,-127.62 140.68,-118.48" style=""/>
+<polygon fill="black" stroke="black" points="143.63,-116.61 135.13,-110.28 137.83,-120.53 143.63,-116.61" style=""/>
+</g>
+</g>
+</svg>

@@ -1,0 +1,37 @@
+digraph division_flow {
+  rankdir=TB;
+  node [shape=box, fontname="Helvetica"];
+
+  start [label="setDivisionMatrix"];
+  calc_inv [label="setInverseMatrixNoAsk (inv B)"];
+  inv_ok [label="getMatrixResult (inv B)"];
+  copy_i [label="divCopyRowsLoop (i)"];
+  copy_j [label="divCopyColsLoop (j)"];
+  alloc [label="mallocResultMatrix (A * inv B)"];
+
+  loop_i [label="divRowsLoop (i)"];
+  loop_j [label="divColsLoop (j)"];
+  loop_k [label="divInnerLoop (k)"];
+  store [label="divStoreResult"];
+
+  print [label="printLastResult"];
+  free_tmp [label="matrixFree (inv temp)"];
+  end [label="divEnd"];
+
+  start -> calc_inv -> inv_ok;
+  inv_ok -> copy_i;
+  copy_i -> copy_j;
+  copy_j -> copy_i [label="fin j, i++"];
+  copy_i -> alloc [label="fin i"];
+
+  alloc -> loop_i;
+  loop_i -> loop_j;
+  loop_j -> loop_k;
+  loop_k -> loop_k [label="k++"];
+  loop_k -> store [label="fin k"];
+  store -> loop_j [label="j++"];
+  loop_j -> loop_i [label="fin j, i++"];
+  loop_i -> print [label="fin i"];
+
+  print -> free_tmp -> end;
+}

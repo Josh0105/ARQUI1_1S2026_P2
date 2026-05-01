@@ -1,0 +1,31 @@
+digraph gauss_jordan_flow {
+  rankdir=TB;
+  node [shape=box, fontname="Helvetica"];
+
+  start [label="setGaussJordanMatrixNoAsk"];
+  gauss [label="setGaussMatrixNoAsk"];
+  kloop [label="gaussJordanKLoop (k)"];
+
+  norm_j [label="gaussJordanNormalizeRowLoop (j)"];
+  iloop [label="gaussJordanILoop (i)"];
+  jloop [label="gaussJordanJLoop (j)"];
+  force0 [label="gaussJordanForceZeroAtPivotColumn"];
+
+  print [label="gaussJordanPrintResult"];
+  end [label="gaussJordanEnd"];
+
+  start -> gauss -> kloop;
+
+  kloop -> norm_j [label="pivot ok"];
+  norm_j -> norm_j [label="j++"];
+  norm_j -> iloop [label="fin j"];
+
+  iloop -> jloop [label="i != k"];
+  jloop -> jloop [label="j++"];
+  jloop -> force0 [label="fin j"];
+  force0 -> iloop [label="i++"];
+  iloop -> kloop [label="fin i, k++"];
+
+  kloop -> print [label="fin k"];
+  print -> end;
+}

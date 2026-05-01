@@ -1,0 +1,54 @@
+digraph determinant_flow {
+  rankdir=TB;
+  node [shape=box, fontname="Helvetica"];
+
+  start [label="setDeterminantMatrix"];
+  ask [label="readMatrixIdFromConsole"];
+  invalid [label="generalStrCharInvalid"];
+  print_instr [label="strDeterminanteBareiss -> printString"];
+
+  call_noask [label="setDeterminantMatrixNoAsk"];
+  gauss [label="setGaussMatrixNoAsk"];
+  gauss_copy_i [label="gaussCopyRowsLoop (i)"];
+  gauss_copy_j [label="gaussCopyColsLoop (j)"];
+  gauss_k [label="gaussKLoop (k)"];
+  gauss_find_pivot [label="gaussFindPivotRowLoop (r)"];
+  gauss_swap_j [label="gaussSwapColsLoop (j)"];
+  gauss_i [label="gaussILoop (i)"];
+  gauss_j [label="gaussJLoop (j)"];
+  no_result [label="determinantEnd"];
+
+  load_n [label="matrixResultRows -> n"];
+  load_last [label="C[n-1][n-1]"];
+  apply_sign [label="* signo swaps (x1)"];
+
+  free_prev [label="freePreviousMatrixResult"];
+  alloc [label="mallocResultMatrix (1x1)"];
+  store [label="store determinant"];
+  print [label="printLastResult"];
+  end [label="determinantEnd"];
+
+  start -> ask;
+  ask -> print_instr [label="ok"];
+  ask -> invalid [label="invalid"];
+  invalid -> ask;
+
+  print_instr -> call_noask -> gauss;
+  gauss -> gauss_copy_i;
+  gauss_copy_i -> gauss_copy_j;
+  gauss_copy_j -> gauss_copy_i [label="fin j, i++"];
+  gauss_copy_i -> gauss_k [label="fin i"];
+
+  gauss_k -> gauss_find_pivot;
+  gauss_find_pivot -> gauss_swap_j [label="pivot swap"];
+  gauss_find_pivot -> gauss_i [label="pivot ok"];
+  gauss_swap_j -> gauss_k [label="fin swap"];
+  gauss_i -> gauss_j;
+  gauss_j -> gauss_i [label="fin j, i++"];
+  gauss_i -> gauss_k [label="fin i, k++"];
+
+  gauss_k -> no_result [label="x0==0"];
+  gauss_k -> load_n [label="ok"];
+
+  load_n -> load_last -> apply_sign -> free_prev -> alloc -> store -> print -> end;
+}

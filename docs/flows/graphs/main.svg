@@ -1,0 +1,415 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2436pt" height="620pt" viewBox="0.00 0.00 2435.99 620.00">
+<g id="graph0" class="graph" transform="translate(4,616) scale(1)" data-name="main_flow">
+
+<polygon fill="white" stroke="none" points="-4,4 -4,-616 2431.99,-616 2431.99,4 -4,4" style=""/>
+<!-- start -->
+<g id="node1" class="node" pointer-events="visible" data-name="start">
+
+<polygon fill="none" stroke="black" points="1160.99,-612 1106.99,-612 1106.99,-576 1160.99,-576 1160.99,-612" style=""/>
+<text text-anchor="middle" x="1133.99" y="-589.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">_start</text>
+</g>
+<!-- print_menu -->
+<g id="node2" class="node" pointer-events="visible" data-name="print_menu">
+
+<polygon fill="none" stroke="black" points="1189.43,-540 1078.55,-540 1078.55,-504 1189.43,-504 1189.43,-540" style=""/>
+<text text-anchor="middle" x="1133.99" y="-517.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">printInitialMenu</text>
+</g>
+<!-- start&#45;&gt;print_menu -->
+<g id="edge1" class="edge" data-name="start-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M1133.99,-575.7C1133.99,-568.41 1133.99,-559.73 1133.99,-551.54" style=""/>
+<polygon fill="black" stroke="black" points="1137.49,-551.62 1133.99,-541.62 1130.49,-551.62 1137.49,-551.62" style=""/>
+</g>
+<!-- read_option -->
+<g id="node3" class="node" pointer-events="visible" data-name="read_option">
+
+<polygon fill="none" stroke="black" points="1205.61,-468 1062.38,-468 1062.38,-432 1205.61,-432 1205.61,-468" style=""/>
+<text text-anchor="middle" x="1133.99" y="-445.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">readIntFromConsole</text>
+</g>
+<!-- print_menu&#45;&gt;read_option -->
+<g id="edge2" class="edge" data-name="print_menu-&gt;read_option">
+
+<path fill="none" stroke="black" d="M1133.99,-503.7C1133.99,-496.41 1133.99,-487.73 1133.99,-479.54" style=""/>
+<polygon fill="black" stroke="black" points="1137.49,-479.62 1133.99,-469.62 1130.49,-479.62 1137.49,-479.62" style=""/>
+</g>
+<!-- dispatch -->
+<g id="node4" class="node" pointer-events="visible" data-name="dispatch">
+
+<polygon fill="none" stroke="black" points="1181.85,-396 1086.13,-396 1086.13,-360 1181.85,-360 1181.85,-396" style=""/>
+<text text-anchor="middle" x="1133.99" y="-373.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">switch/cases</text>
+</g>
+<!-- read_option&#45;&gt;dispatch -->
+<g id="edge3" class="edge" data-name="read_option-&gt;dispatch">
+
+<path fill="none" stroke="black" d="M1133.99,-431.7C1133.99,-424.41 1133.99,-415.73 1133.99,-407.54" style=""/>
+<polygon fill="black" stroke="black" points="1137.49,-407.62 1133.99,-397.62 1130.49,-407.62 1137.49,-407.62" style=""/>
+</g>
+<!-- err -->
+<g id="node5" class="node" pointer-events="visible" data-name="err">
+
+<polygon fill="none" stroke="black" points="143.97,-324 0.01,-324 0.01,-288 143.97,-288 143.97,-324" style=""/>
+<text text-anchor="middle" x="71.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">errMsg -&gt; printString</text>
+</g>
+<!-- dispatch&#45;&gt;err -->
+<g id="edge27" class="edge" data-name="dispatch-&gt;err">
+
+<path fill="none" stroke="black" d="M1085.77,-377C944.27,-376.44 517.84,-370.81 155.56,-324.21" style=""/>
+<polygon fill="black" stroke="black" points="156.19,-320.77 145.82,-322.95 155.29,-327.71 156.19,-320.77" style=""/>
+</g>
+<!-- case1 -->
+<g id="node6" class="node" pointer-events="visible" data-name="case1">
+
+<polygon fill="none" stroke="black" points="286.42,-324 161.56,-324 161.56,-288 286.42,-288 286.42,-324" style=""/>
+<text text-anchor="middle" x="223.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case1: newMatrix</text>
+</g>
+<!-- dispatch&#45;&gt;case1 -->
+<g id="edge4" class="edge" data-name="dispatch-&gt;case1">
+
+<path fill="none" stroke="black" d="M1085.92,-376.85C958.61,-375.82 602.24,-368.98 297.86,-324.28" style=""/>
+<polygon fill="black" stroke="black" points="298.5,-320.84 288.09,-322.83 297.47,-327.76 298.5,-320.84" style=""/>
+</g>
+<!-- case2 -->
+<g id="node7" class="node" pointer-events="visible" data-name="case2">
+
+<polygon fill="none" stroke="black" points="455.88,-324 304.1,-324 304.1,-288 455.88,-288 455.88,-324" style=""/>
+<text text-anchor="middle" x="379.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case2: freeMatrixById</text>
+</g>
+<!-- dispatch&#45;&gt;case2 -->
+<g id="edge6" class="edge" data-name="dispatch-&gt;case2">
+
+<path fill="none" stroke="black" d="M1085.92,-375.15C977.41,-370.54 705.05,-356.63 467.65,-324.27" style=""/>
+<polygon fill="black" stroke="black" points="468.26,-320.83 457.87,-322.93 467.3,-327.76 468.26,-320.83" style=""/>
+</g>
+<!-- case3 -->
+<g id="node8" class="node" pointer-events="visible" data-name="case3">
+
+<polygon fill="none" stroke="black" points="628.49,-324 473.49,-324 473.49,-288 628.49,-288 628.49,-324" style=""/>
+<text text-anchor="middle" x="550.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case3: printMatrixById</text>
+</g>
+<!-- dispatch&#45;&gt;case3 -->
+<g id="edge8" class="edge" data-name="dispatch-&gt;case3">
+
+<path fill="none" stroke="black" d="M1085.83,-373.3C998.81,-366.3 809.41,-349.64 640.13,-324.41" style=""/>
+<polygon fill="black" stroke="black" points="640.66,-320.95 630.25,-322.92 639.62,-327.87 640.66,-320.95" style=""/>
+</g>
+<!-- case4 -->
+<g id="node9" class="node" pointer-events="visible" data-name="case4">
+
+<polygon fill="none" stroke="black" points="809.55,-324 646.43,-324 646.43,-288 809.55,-288 809.55,-324" style=""/>
+<text text-anchor="middle" x="727.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case4: setIdentityMatrix</text>
+</g>
+<!-- dispatch&#45;&gt;case4 -->
+<g id="edge10" class="edge" data-name="dispatch-&gt;case4">
+
+<path fill="none" stroke="black" d="M1085.76,-369.23C1025.98,-359.52 920.69,-342.2 821.07,-324.53" style=""/>
+<polygon fill="black" stroke="black" points="821.84,-321.11 811.38,-322.81 820.62,-328.01 821.84,-321.11" style=""/>
+</g>
+<!-- case5 -->
+<g id="node10" class="node" pointer-events="visible" data-name="case5">
+
+<polygon fill="none" stroke="black" points="1018.85,-324 827.14,-324 827.14,-288 1018.85,-288 1018.85,-324" style=""/>
+<text text-anchor="middle" x="922.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case5: setTransposedMatrix</text>
+</g>
+<!-- dispatch&#45;&gt;case5 -->
+<g id="edge12" class="edge" data-name="dispatch-&gt;case5">
+
+<path fill="none" stroke="black" d="M1085.85,-361.03C1056.34,-351.24 1018.24,-338.6 986.31,-328.01" style=""/>
+<polygon fill="black" stroke="black" points="987.77,-324.8 977.17,-324.98 985.56,-331.45 987.77,-324.8" style=""/>
+</g>
+<!-- case6 -->
+<g id="node11" class="node" pointer-events="visible" data-name="case6">
+
+<polygon fill="none" stroke="black" points="1606.38,-324 1447.6,-324 1447.6,-288 1606.38,-288 1606.38,-324" style=""/>
+<text text-anchor="middle" x="1526.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case6: setGaussMatrix</text>
+</g>
+<!-- dispatch&#45;&gt;case6 -->
+<g id="edge14" class="edge" data-name="dispatch-&gt;case6">
+
+<path fill="none" stroke="black" d="M1182.21,-368.84C1239.97,-359.01 1339.97,-341.82 1436.31,-324.29" style=""/>
+<polygon fill="black" stroke="black" points="1436.73,-327.77 1445.94,-322.54 1435.47,-320.89 1436.73,-327.77" style=""/>
+</g>
+<!-- case7 -->
+<g id="node12" class="node" pointer-events="visible" data-name="case7">
+
+<polygon fill="none" stroke="black" points="1825.68,-324 1624.3,-324 1624.3,-288 1825.68,-288 1825.68,-324" style=""/>
+<text text-anchor="middle" x="1724.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case7: setGaussJordanMatrix</text>
+</g>
+<!-- dispatch&#45;&gt;case7 -->
+<g id="edge16" class="edge" data-name="dispatch-&gt;case7">
+
+<path fill="none" stroke="black" d="M1182.21,-372.39C1266.99,-364.13 1448.56,-345.76 1612.73,-324.27" style=""/>
+<polygon fill="black" stroke="black" points="1613.06,-327.75 1622.51,-322.98 1612.14,-320.81 1613.06,-327.75" style=""/>
+</g>
+<!-- case8 -->
+<g id="node13" class="node" pointer-events="visible" data-name="case8">
+
+<polygon fill="none" stroke="black" points="2007.83,-324 1844.16,-324 1844.16,-288 2007.83,-288 2007.83,-324" style=""/>
+<text text-anchor="middle" x="1925.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case8: setInverseMatrix</text>
+</g>
+<!-- dispatch&#45;&gt;case8 -->
+<g id="edge18" class="edge" data-name="dispatch-&gt;case8">
+
+<path fill="none" stroke="black" d="M1182.2,-375.17C1294.47,-370.52 1582.24,-356.36 1832.58,-324.23" style=""/>
+<polygon fill="black" stroke="black" points="1832.75,-327.74 1842.21,-322.98 1831.85,-320.8 1832.75,-327.74" style=""/>
+</g>
+<!-- case9 -->
+<g id="node14" class="node" pointer-events="visible" data-name="case9">
+
+<polygon fill="none" stroke="black" points="2220.17,-324 2025.81,-324 2025.81,-288 2220.17,-288 2220.17,-324" style=""/>
+<text text-anchor="middle" x="2122.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case9: setDeterminantMatrix</text>
+</g>
+<!-- dispatch&#45;&gt;case9 -->
+<g id="edge20" class="edge" data-name="dispatch-&gt;case9">
+
+<path fill="none" stroke="black" d="M1181.99,-375.79C1313.51,-372.12 1690.87,-359.2 2014.43,-324.22" style=""/>
+<polygon fill="black" stroke="black" points="2014.36,-327.75 2023.92,-323.18 2013.6,-320.79 2014.36,-327.75" style=""/>
+</g>
+<!-- case10 -->
+<g id="node15" class="node" pointer-events="visible" data-name="case10">
+
+<polygon fill="none" stroke="black" points="1230.9,-324 1037.08,-324 1037.08,-288 1230.9,-288 1230.9,-324" style=""/>
+<text text-anchor="middle" x="1133.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case10: printArithmeticMenu</text>
+</g>
+<!-- dispatch&#45;&gt;case10 -->
+<g id="edge22" class="edge" data-name="dispatch-&gt;case10">
+
+<path fill="none" stroke="black" d="M1133.99,-359.7C1133.99,-352.41 1133.99,-343.73 1133.99,-335.54" style=""/>
+<polygon fill="black" stroke="black" points="1137.49,-335.62 1133.99,-325.62 1130.49,-335.62 1137.49,-335.62" style=""/>
+</g>
+<!-- case11 -->
+<g id="node16" class="node" pointer-events="visible" data-name="case11">
+
+<polygon fill="none" stroke="black" points="2400.29,-324 2237.69,-324 2237.69,-288 2400.29,-288 2400.29,-324" style=""/>
+<text text-anchor="middle" x="2318.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case11: printLastResult</text>
+</g>
+<!-- dispatch&#45;&gt;case11 -->
+<g id="edge24" class="edge" data-name="dispatch-&gt;case11">
+
+<path fill="none" stroke="black" d="M1182.22,-377.04C1334.31,-376.66 1817.55,-371.63 2226.47,-324.2" style=""/>
+<polygon fill="black" stroke="black" points="2226.61,-327.71 2236.13,-323.07 2225.79,-320.75 2226.61,-327.71" style=""/>
+</g>
+<!-- case12 -->
+<g id="node17" class="node" pointer-events="visible" data-name="case12">
+
+<polygon fill="none" stroke="black" points="1429.46,-324 1248.53,-324 1248.53,-288 1429.46,-288 1429.46,-324" style=""/>
+<text text-anchor="middle" x="1338.99" y="-301.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case12: endProgram (exit)</text>
+</g>
+<!-- dispatch&#45;&gt;case12 -->
+<g id="edge26" class="edge" data-name="dispatch-&gt;case12">
+
+<path fill="none" stroke="black" d="M1182.31,-360.5C1210.69,-350.81 1246.84,-338.46 1277.27,-328.08" style=""/>
+<polygon fill="black" stroke="black" points="1278.01,-331.52 1286.34,-324.98 1275.74,-324.9 1278.01,-331.52" style=""/>
+</g>
+<!-- err&#45;&gt;print_menu -->
+<g id="edge28" class="edge" data-name="err-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M120.28,-324.49C214.71,-357.95 431.05,-431 618.99,-468 777.84,-499.27 968.1,-512.78 1066.94,-518.03" style=""/>
+<polygon fill="black" stroke="black" points="1066.56,-521.52 1076.73,-518.54 1066.93,-514.53 1066.56,-521.52" style=""/>
+</g>
+<!-- case1&#45;&gt;print_menu -->
+<g id="edge5" class="edge" data-name="case1-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M272.94,-324.38C366.57,-357.02 578,-427.8 760.99,-468 866.87,-491.26 992,-506.62 1067.07,-514.55" style=""/>
+<polygon fill="black" stroke="black" points="1066.41,-518 1076.72,-515.56 1067.14,-511.04 1066.41,-518" style=""/>
+</g>
+<!-- case2&#45;&gt;print_menu -->
+<g id="edge7" class="edge" data-name="case2-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M431.08,-324.38C539.39,-361.11 789.23,-445.08 875.99,-468 940.25,-484.97 1014.7,-499.76 1067.06,-509.37" style=""/>
+<polygon fill="black" stroke="black" points="1066.26,-512.78 1076.73,-511.12 1067.51,-505.89 1066.26,-512.78" style=""/>
+</g>
+<!-- case3&#45;&gt;print_menu -->
+<g id="edge9" class="edge" data-name="case3-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M621.87,-324.5C656.19,-333.73 697.72,-346.04 733.99,-360 836.39,-399.41 853.74,-428.21 955.99,-468 992.19,-482.09 1033.73,-494.65 1067.58,-504.01" style=""/>
+<polygon fill="black" stroke="black" points="1066.25,-507.27 1076.82,-506.53 1068.1,-500.52 1066.25,-507.27" style=""/>
+</g>
+<!-- case4&#45;&gt;print_menu -->
+<g id="edge11" class="edge" data-name="case4-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M776.07,-324.46C800.27,-333.9 829.76,-346.39 854.99,-360 930.51,-400.72 939.96,-426.39 1014.99,-468 1035.45,-479.35 1058.81,-490.18 1079.39,-499.06" style=""/>
+<polygon fill="black" stroke="black" points="1077.9,-502.23 1088.47,-502.93 1080.64,-495.79 1077.9,-502.23" style=""/>
+</g>
+<!-- case5&#45;&gt;print_menu -->
+<g id="edge13" class="edge" data-name="case5-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M934.37,-324.45C955.28,-355.7 1002.38,-422.2 1052.99,-468 1065.12,-478.98 1079.75,-489.27 1093.21,-497.82" style=""/>
+<polygon fill="black" stroke="black" points="1091.12,-500.64 1101.46,-502.92 1094.8,-494.68 1091.12,-500.64" style=""/>
+</g>
+<!-- case6&#45;&gt;print_menu -->
+<g id="edge15" class="edge" data-name="case6-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M1494.87,-324.49C1424.11,-363.02 1254.86,-455.18 1175.89,-498.18" style=""/>
+<polygon fill="black" stroke="black" points="1174.26,-495.09 1167.15,-502.94 1177.6,-501.24 1174.26,-495.09" style=""/>
+</g>
+<!-- case7&#45;&gt;print_menu -->
+<g id="edge17" class="edge" data-name="case7-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M1676.68,-324.49C1568.87,-363.53 1308.97,-457.64 1192.35,-499.87" style=""/>
+<polygon fill="black" stroke="black" points="1191.49,-496.46 1183.28,-503.15 1193.87,-503.04 1191.49,-496.46" style=""/>
+</g>
+<!-- case8&#45;&gt;print_menu -->
+<g id="edge19" class="edge" data-name="case8-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M1865.17,-324.44C1759.71,-354.55 1535.96,-417.9 1345.99,-468 1297.6,-480.76 1242.8,-494.44 1201.03,-504.71" style=""/>
+<polygon fill="black" stroke="black" points="1200.23,-501.3 1191.36,-507.08 1201.9,-508.1 1200.23,-501.3" style=""/>
+</g>
+<!-- case9&#45;&gt;print_menu -->
+<g id="edge21" class="edge" data-name="case9-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M2052.18,-324.39C1926.07,-355.11 1654.11,-420.25 1422.99,-468 1347.24,-483.65 1259.83,-499.36 1201.15,-509.56" style=""/>
+<polygon fill="black" stroke="black" points="1200.55,-506.11 1191.3,-511.27 1201.75,-513.01 1200.55,-506.11" style=""/>
+</g>
+<!-- arith_menu -->
+<g id="node18" class="node" pointer-events="visible" data-name="arith_menu">
+
+<polygon fill="none" stroke="black" points="1342.48,-252 1201.5,-252 1201.5,-216 1342.48,-216 1342.48,-252" style=""/>
+<text text-anchor="middle" x="1271.99" y="-229.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">printArithmeticMenu</text>
+</g>
+<!-- case10&#45;&gt;arith_menu -->
+<g id="edge23" class="edge" data-name="case10-&gt;arith_menu">
+
+<path fill="none" stroke="black" d="M1168.46,-287.52C1186.46,-278.39 1208.68,-267.11 1227.92,-257.35" style=""/>
+<polygon fill="black" stroke="black" points="1229.28,-260.59 1236.61,-252.95 1226.11,-254.35 1229.28,-260.59" style=""/>
+</g>
+<!-- case11&#45;&gt;print_menu -->
+<g id="edge25" class="edge" data-name="case11-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M2240.76,-324.45C2098.03,-355.92 1785.6,-423.05 1519.99,-468 1408.43,-486.88 1277.86,-503.72 1200.75,-513.12" style=""/>
+<polygon fill="black" stroke="black" points="1200.78,-509.59 1191.27,-514.27 1201.62,-516.54 1200.78,-509.59" style=""/>
+</g>
+<!-- arith_read -->
+<g id="node19" class="node" pointer-events="visible" data-name="arith_read">
+
+<polygon fill="none" stroke="black" points="1449.61,-180 1306.38,-180 1306.38,-144 1449.61,-144 1449.61,-180" style=""/>
+<text text-anchor="middle" x="1377.99" y="-157.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">readIntFromConsole</text>
+</g>
+<!-- arith_menu&#45;&gt;arith_read -->
+<g id="edge29" class="edge" data-name="arith_menu-&gt;arith_read">
+
+<path fill="none" stroke="black" d="M1298.47,-215.52C1311.72,-206.76 1327.95,-196.04 1342.29,-186.58" style=""/>
+<polygon fill="black" stroke="black" points="1344.17,-189.53 1350.59,-181.09 1340.32,-183.68 1344.17,-189.53" style=""/>
+</g>
+<!-- arith_dispatch -->
+<g id="node20" class="node" pointer-events="visible" data-name="arith_dispatch">
+
+<polygon fill="none" stroke="black" points="1466.42,-108 1299.56,-108 1299.56,-72 1466.42,-72 1466.42,-108" style=""/>
+<text text-anchor="middle" x="1382.99" y="-85.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">switch/cases aritmeticas</text>
+</g>
+<!-- arith_read&#45;&gt;arith_dispatch -->
+<g id="edge30" class="edge" data-name="arith_read-&gt;arith_dispatch">
+
+<path fill="none" stroke="black" d="M1379.23,-143.7C1379.75,-136.41 1380.37,-127.73 1380.95,-119.54" style=""/>
+<polygon fill="black" stroke="black" points="1384.44,-119.84 1381.66,-109.61 1377.46,-119.34 1384.44,-119.84" style=""/>
+</g>
+<!-- a1 -->
+<g id="node21" class="node" pointer-events="visible" data-name="a1">
+
+<polygon fill="none" stroke="black" points="1269.53,-36 1038.45,-36 1038.45,0 1269.53,0 1269.53,-36" style=""/>
+<text text-anchor="middle" x="1153.99" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case1_1: setAdditionMatrix (suma)</text>
+</g>
+<!-- arith_dispatch&#45;&gt;a1 -->
+<g id="edge31" class="edge" data-name="arith_dispatch-&gt;a1">
+
+<path fill="none" stroke="black" d="M1325.8,-71.52C1294.25,-61.88 1254.9,-49.84 1221.81,-39.73" style=""/>
+<polygon fill="black" stroke="black" points="1222.89,-36.4 1212.3,-36.82 1220.84,-43.09 1222.89,-36.4" style=""/>
+</g>
+<!-- a2 -->
+<g id="node22" class="node" pointer-events="visible" data-name="a2">
+
+<polygon fill="none" stroke="black" points="1678.42,-36 1449.56,-36 1449.56,0 1678.42,0 1678.42,-36" style=""/>
+<text text-anchor="middle" x="1563.99" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case1_2: setAdditionMatrix (resta)</text>
+</g>
+<!-- arith_dispatch&#45;&gt;a2 -->
+<g id="edge33" class="edge" data-name="arith_dispatch-&gt;a2">
+
+<path fill="none" stroke="black" d="M1428.2,-71.52C1452.48,-62.13 1482.62,-50.47 1508.33,-40.53" style=""/>
+<polygon fill="black" stroke="black" points="1509.57,-43.8 1517.64,-36.93 1507.05,-37.27 1509.57,-43.8" style=""/>
+</g>
+<!-- a3 -->
+<g id="node23" class="node" pointer-events="visible" data-name="a3">
+
+<polygon fill="none" stroke="black" points="1910.41,-36 1695.57,-36 1695.57,0 1910.41,0 1910.41,-36" style=""/>
+<text text-anchor="middle" x="1802.99" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case1_3: setMultiplicationMatrix</text>
+</g>
+<!-- arith_dispatch&#45;&gt;a3 -->
+<g id="edge35" class="edge" data-name="arith_dispatch-&gt;a3">
+
+<path fill="none" stroke="black" d="M1466.72,-75.04C1529.87,-64.52 1617.25,-49.96 1687.11,-38.31" style=""/>
+<polygon fill="black" stroke="black" points="1687.38,-41.82 1696.67,-36.72 1686.23,-34.91 1687.38,-41.82" style=""/>
+</g>
+<!-- a4 -->
+<g id="node24" class="node" pointer-events="visible" data-name="a4">
+
+<polygon fill="none" stroke="black" points="1020,-36 837.98,-36 837.98,0 1020,0 1020,-36" style=""/>
+<text text-anchor="middle" x="928.99" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case1_4: setDivisionMatrix</text>
+</g>
+<!-- arith_dispatch&#45;&gt;a4 -->
+<g id="edge37" class="edge" data-name="arith_dispatch-&gt;a4">
+
+<path fill="none" stroke="black" d="M1299.23,-76.94C1230.12,-66.87 1129.17,-51.92 1031.54,-36.39" style=""/>
+<polygon fill="black" stroke="black" points="1032.19,-32.95 1021.76,-34.83 1031.08,-39.86 1032.19,-32.95" style=""/>
+</g>
+<!-- a5 -->
+<g id="node25" class="node" pointer-events="visible" data-name="a5">
+
+<polygon fill="none" stroke="black" points="2402.77,-36 2179.21,-36 2179.21,0 2402.77,0 2402.77,-36" style=""/>
+<text text-anchor="middle" x="2290.99" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">case1_5: volver al menu principal</text>
+</g>
+<!-- arith_dispatch&#45;&gt;a5 -->
+<g id="edge39" class="edge" data-name="arith_dispatch-&gt;a5">
+
+<path fill="none" stroke="black" d="M1466.79,-82.54C1627.59,-70.14 1980.11,-42.97 2167.76,-28.5" style=""/>
+<polygon fill="black" stroke="black" points="2167.84,-32 2177.55,-27.75 2167.31,-25.02 2167.84,-32" style=""/>
+</g>
+<!-- arith_err -->
+<g id="node26" class="node" pointer-events="visible" data-name="arith_err">
+
+<polygon fill="none" stroke="black" points="1431.97,-36 1288.01,-36 1288.01,0 1431.97,0 1431.97,-36" style=""/>
+<text text-anchor="middle" x="1359.99" y="-13.8" font-family="Helvetica,sans-Serif" font-size="14.00" style="">errMsg -&gt; printString</text>
+</g>
+<!-- arith_dispatch&#45;&gt;arith_err -->
+<g id="edge41" class="edge" data-name="arith_dispatch-&gt;arith_err">
+
+<path fill="none" stroke="black" d="M1377.31,-71.7C1374.85,-64.24 1371.93,-55.32 1369.18,-46.97" style=""/>
+<polygon fill="black" stroke="black" points="1372.53,-45.95 1366.08,-37.54 1365.88,-48.14 1372.53,-45.95" style=""/>
+</g>
+<!-- a1&#45;&gt;arith_menu -->
+<g id="edge32" class="edge" data-name="a1-&gt;arith_menu">
+
+<path fill="none" stroke="black" d="M1163.49,-36.23C1183.99,-73.4 1232.48,-161.35 1257.1,-206" style=""/>
+<polygon fill="black" stroke="black" points="1253.91,-207.46 1261.8,-214.52 1260.04,-204.08 1253.91,-207.46" style=""/>
+</g>
+<!-- a2&#45;&gt;arith_menu -->
+<g id="edge34" class="edge" data-name="a2-&gt;arith_menu">
+
+<path fill="none" stroke="black" d="M1557.57,-36.26C1544.37,-69.33 1510.99,-141.72 1458.99,-180 1428.46,-202.47 1388.72,-215.43 1353.72,-222.89" style=""/>
+<polygon fill="black" stroke="black" points="1353.15,-219.44 1344.03,-224.83 1354.52,-226.3 1353.15,-219.44" style=""/>
+</g>
+<!-- a3&#45;&gt;arith_menu -->
+<g id="edge36" class="edge" data-name="a3-&gt;arith_menu">
+
+<path fill="none" stroke="black" d="M1774.8,-36.49C1721.32,-68.99 1600.65,-139.11 1490.99,-180 1446.84,-196.46 1395.75,-209.17 1354.03,-218.01" style=""/>
+<polygon fill="black" stroke="black" points="1353.36,-214.57 1344.28,-220.03 1354.79,-221.42 1353.36,-214.57" style=""/>
+</g>
+<!-- a4&#45;&gt;arith_menu -->
+<g id="edge38" class="edge" data-name="a4-&gt;arith_menu">
+
+<path fill="none" stroke="black" d="M957.03,-36.49C1018.53,-74.86 1165.3,-166.43 1234.57,-209.65" style=""/>
+<polygon fill="black" stroke="black" points="1232.59,-212.54 1242.93,-214.87 1236.3,-206.6 1232.59,-212.54" style=""/>
+</g>
+<!-- a5&#45;&gt;print_menu -->
+<g id="edge40" class="edge" data-name="a5-&gt;print_menu">
+
+<path fill="none" stroke="black" d="M2326.63,-36.39C2367.22,-59 2427.99,-102.59 2427.99,-161 2427.99,-379 2427.99,-379 2427.99,-379 2427.99,-503.71 1466.08,-518.93 1200.95,-520.76" style=""/>
+<polygon fill="black" stroke="black" points="1201.08,-517.26 1191.11,-520.82 1201.13,-524.26 1201.08,-517.26" style=""/>
+</g>
+<!-- arith_err&#45;&gt;arith_menu -->
+<g id="edge42" class="edge" data-name="arith_err-&gt;arith_menu">
+
+<path fill="none" stroke="black" d="M1326.99,-36.48C1313.6,-45.31 1299.35,-57.29 1290.99,-72 1267.47,-113.41 1266.74,-170.42 1268.95,-204.32" style=""/>
+<polygon fill="black" stroke="black" points="1265.45,-204.49 1269.74,-214.18 1272.43,-203.93 1265.45,-204.49" style=""/>
+</g>
+</g>
+</svg>

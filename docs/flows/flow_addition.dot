@@ -1,0 +1,53 @@
+digraph addition_flow {
+  rankdir=TB;
+  node [shape=box, fontname="Helvetica"];
+
+  start [label="setAdditionMatrix"];
+  ask1 [label="generalAskIdFirstMatrix"];
+  read1 [label="readMatrixIdFromConsole"];
+  get1 [label="getMatrixById (A)"];
+  notfound1 [label="generalMatrixNotFound"];
+
+  ask2 [label="generalAskIdSecondMatrix"];
+  read2 [label="readMatrixIdFromConsole"];
+  get2 [label="getMatrixById (B)"];
+  notfound2 [label="generalMatrixNotFound"];
+
+  validate [label="validateEqualDimensions"];
+  noeq [label="generalNoEqualDimensions"];
+
+  printA [label="printMatrixByIdNoAsk (A)"];
+  printB [label="printMatrixByIdNoAsk (B)"];
+
+  freePrev [label="freePreviousMatrixResult"];
+  alloc [label="mallocResultMatrix"];
+
+  loop_i [label="additionRowsLoop (i)"];
+  loop_j [label="additionColsLoop (j)"];
+  op [label="doAddition / resta"];
+  store [label="storeAddSubResult"];
+
+  print [label="printLastResult"];
+  end [label="endSetAdditionMatrix"];
+
+  start -> ask1 -> read1 -> get1;
+  get1 -> ask2 [label="ok"];
+  get1 -> notfound1 [label="null"];
+  notfound1 -> ask1;
+
+  ask2 -> read2 -> get2;
+  get2 -> validate [label="ok"];
+  get2 -> notfound2 [label="null"];
+  notfound2 -> ask2;
+
+  validate -> printA [label="dims ok"];
+  validate -> noeq [label="dims fail"];
+  noeq -> end;
+
+  printA -> printB -> freePrev -> alloc -> loop_i;
+  loop_i -> loop_j;
+  loop_i -> print [label="fin i"];
+  loop_j -> op -> store -> loop_j;
+  loop_j -> loop_i [label="fin j, i++"];
+  print -> end;
+}

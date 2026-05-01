@@ -1,0 +1,56 @@
+digraph main_flow {
+  rankdir=TB;
+  node [shape=box, fontname="Helvetica"];
+
+  start [label="_start"];
+  print_menu [label="printInitialMenu"];
+  read_option [label="readIntFromConsole"];
+  dispatch [label="switch/cases"];
+  err [label="errMsg -> printString"];
+
+  case1 [label="case1: newMatrix"];
+  case2 [label="case2: freeMatrixById"];
+  case3 [label="case3: printMatrixById"];
+  case4 [label="case4: setIdentityMatrix"];
+  case5 [label="case5: setTransposedMatrix"];
+  case6 [label="case6: setGaussMatrix"];
+  case7 [label="case7: setGaussJordanMatrix"];
+  case8 [label="case8: setInverseMatrix"];
+  case9 [label="case9: setDeterminantMatrix"];
+  case10 [label="case10: printArithmeticMenu"];
+  case11 [label="case11: printLastResult"];
+  case12 [label="case12: endProgram (exit)"];
+
+  arith_menu [label="printArithmeticMenu"];
+  arith_read [label="readIntFromConsole"];
+  arith_dispatch [label="switch/cases aritmeticas"];
+  a1 [label="case1_1: setAdditionMatrix (suma)"];
+  a2 [label="case1_2: setAdditionMatrix (resta)"];
+  a3 [label="case1_3: setMultiplicationMatrix"];
+  a4 [label="case1_4: setDivisionMatrix"];
+  a5 [label="case1_5: volver al menu principal"];
+  arith_err [label="errMsg -> printString"];
+
+  start -> print_menu -> read_option -> dispatch;
+  dispatch -> case1 -> print_menu;
+  dispatch -> case2 -> print_menu;
+  dispatch -> case3 -> print_menu;
+  dispatch -> case4 -> print_menu;
+  dispatch -> case5 -> print_menu;
+  dispatch -> case6 -> print_menu;
+  dispatch -> case7 -> print_menu;
+  dispatch -> case8 -> print_menu;
+  dispatch -> case9 -> print_menu;
+  dispatch -> case10 -> arith_menu;
+  dispatch -> case11 -> print_menu;
+  dispatch -> case12;
+  dispatch -> err -> print_menu;
+
+  arith_menu -> arith_read -> arith_dispatch;
+  arith_dispatch -> a1 -> arith_menu;
+  arith_dispatch -> a2 -> arith_menu;
+  arith_dispatch -> a3 -> arith_menu;
+  arith_dispatch -> a4 -> arith_menu;
+  arith_dispatch -> a5 -> print_menu;
+  arith_dispatch -> arith_err -> arith_menu;
+}

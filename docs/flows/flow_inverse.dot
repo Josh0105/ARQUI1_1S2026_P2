@@ -1,0 +1,49 @@
+digraph inverse_flow {
+  rankdir=TB;
+  node [shape=box, fontname="Helvetica"];
+
+  start [label="setInverseMatrixNoAsk"];
+  build_aug [label="inverseFillRowsLoop (i)"];
+  build_aug_j [label="inverseFillColsLoop (j)"];
+
+  kloop [label="inverseKLoop (k)"];
+  find_pivot [label="inverseFindPivotLoop (r)"];
+  swap_j [label="inverseSwapColsLoop (j)"];
+
+  norm_j [label="inverseNormalizeLoop (j)"];
+  iloop [label="inverseILoop (i)"];
+  jloop [label="inverseJLoop (j)"];
+  force0 [label="inverseForceZeroAtPivot"];
+
+  copy_i [label="inverseCopyRowsLoop (i)"];
+  copy_j [label="inverseCopyColsLoop (j)"];
+
+  print [label="inversePrintSuccess"];
+  end [label="inverseNoAskEnd"];
+
+  start -> build_aug;
+  build_aug -> build_aug_j;
+  build_aug_j -> build_aug [label="fin j, i++"];
+  build_aug -> kloop [label="fin i"];
+
+  kloop -> find_pivot;
+  find_pivot -> swap_j [label="swap"];
+  find_pivot -> norm_j [label="pivot ok"];
+  swap_j -> kloop [label="fin swap"];
+
+  norm_j -> norm_j [label="j++"];
+  norm_j -> iloop [label="fin j"];
+
+  iloop -> jloop [label="i != k"];
+  jloop -> jloop [label="j++"];
+  jloop -> force0 [label="fin j"];
+  force0 -> iloop [label="i++"];
+  iloop -> kloop [label="fin i, k++"];
+
+  kloop -> copy_i [label="fin k"];
+  copy_i -> copy_j;
+  copy_j -> copy_i [label="fin j, i++"];
+  copy_i -> print [label="fin i"];
+
+  print -> end;
+}

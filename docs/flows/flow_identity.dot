@@ -1,0 +1,17 @@
+digraph identity_flow {
+  rankdir=TB;
+  node [shape=box, fontname="Helvetica"];
+
+  start [label="setIdentityMatrix"];
+  alloc [label="mallocResultMatrix"];
+  loop_i [label="loopIdentityMatrix (i)"];
+  store [label="store diagonal 1"];
+  print [label="printLastResult"];
+  end [label="endSetIdentityMatrix"];
+
+  start -> alloc -> loop_i;
+  loop_i -> store;
+  store -> loop_i [label="i++"];
+  loop_i -> print [label="fin i"];
+  print -> end;
+}
